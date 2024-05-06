@@ -1,0 +1,45 @@
+{
+    "course": [
+        {
+            "title": "Installation",
+            "data": [
+                {
+                    "label": "React has been designed from the start for gradual adoption. You can use as little or as much React as you need. Whether you want to get a taste of React, add some interactivity to an HTML page, or start a complex React-powered app, this section will help you get started.",
+                    "chapter": "In this chapter",
+                    "video": "https://www.youtube.com/embed/QFaFIcGhPoM?si=gga8au7zyx5lfrsN",
+                    "learn": [
+                        {
+                            "title": "Installation",
+                            "url": "/installation"
+                        },
+                        {
+                            "title": "Add React to an Existing Project",
+                            "url": "/add-react-to-an-existing-project"
+                        },
+                        {
+                            "title": "Editor Setup",
+                            "url": "/editor-setup"
+                        },
+                        {
+                            "title": "Using TypeScript",
+                            "url": "/using-typeScript"
+                        },
+                        {
+                            "title": "React Developer Tools",
+                            "url": "/react-developer-tools"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Add React to an Existing Project",
+            "data": [
+                {
+                    "label": "If you want to add some interactivity to your existing project, you don’t have to rewrite it in React. Add React to your existing stack, and render interactive React components anywhere.",
+                    "video": "https://www.youtube.com/embed/QFaFIcGhPoM?si=gga8au7zyx5lfrsN"   
+                }
+            ]
+        }
+    ]
+}

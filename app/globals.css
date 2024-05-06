@@ -18,6 +18,7 @@ body {
     --paragraph: #696984;
     --section_bg: #FFFFFF;
     --blog_title: #252641;
+    --common_title: #000000;
   }
 
   .dark-mode {
@@ -30,5 +31,6 @@ body {
     --paragraph: #FFFFFF;
     --section_bg: #000000;
     --blog_title: #FFFFFF;
+    --common_title: #FFFFFF;
   }
 

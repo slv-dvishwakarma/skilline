@@ -22,7 +22,8 @@ const config: Config = {
         footer_bg: 'var(--footer_bg)',
         paragraph: 'var(--paragraph)',
         section: 'var(--section_bg)',
-        blog_title: 'var(--blog_title)'
+        blog_title: 'var(--blog_title)',
+        common: 'var(--common_title)'
       },
       keyframes: {
         slideInDown: {
