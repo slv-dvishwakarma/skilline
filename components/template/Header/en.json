@@ -1,0 +1,149 @@
+{
+    "content": {
+        "title_1": "BUILD A WEBSITE",
+        "title_2": "GET STARTTED",
+        "login": "Login",
+        "signup": "Sign Up",
+        "dark": "dark_mode",
+        "light": "light_mode"
+    },
+    "mainmenu": [
+        {
+            "title": "Home",
+            "url": "/"
+        },
+        {
+            "title": "Career",
+            "url": "/Career"
+        },
+        {
+            "title": "Blog",
+            "url": "/Blog"
+        },
+        {
+            "title": "Contact Us",
+            "url": "/Contact"
+        },
+        {
+            "title": "Technology",
+            "max_menu": [
+                {
+                    "icon": "react",
+                    "title": "React.Js",
+                    "label": "A JavaScript library for building user interfaces",
+                    "url": "/reactjs"
+                },
+                {
+                    "icon": "angular",
+                    "title": "Angular",
+                    "label": "A platform and framework for building single-page client applications using HTML and TypeScript",
+                    "url": "/angular"
+                },
+                {
+                    "icon": "vue",
+                    "title": "Vue.js",
+                    "label": "A progressive JavaScript framework for building user interfaces",
+                    "url": "/vuejs"
+                },
+                {
+                    "icon": "python",
+                    "title": "Python",
+                    "label": "A high-level programming language known for its simplicity and readability",
+                    "url": "/python"
+                },
+                {
+                    "icon": "java",
+                    "title": "Java",
+                    "label": "A widely-used programming language for building enterprise-scale applications",
+                    "url": "/java"
+                },
+                {
+                    "icon": "nodejs",
+                    "title": "Node.js",
+                    "label": "A JavaScript runtime built on Chrome's V8 JavaScript engine for building scalable network applications",
+                    "url": "/nodejs"
+                }
+            ],
+            "stories": [
+                {
+                    "icon": "arrowupright",
+                    "title": "21-day portfolio course",
+                    "url": "/"
+                },
+                {
+                    "icon": "arrowupright",
+                    "title": "Building a business website",
+                    "url": "/"
+                },
+                {
+                    "icon": "arrowupright",
+                    "title": "Mastering JavaScript fundamentals",
+                    "url": "/"
+                },
+                {
+                    "icon": "arrowupright",
+                    "title": "Creating engaging user experiences",
+                    "url": "/"
+                },
+                {
+                    "icon": "arrowupright",
+                    "title": "Analyzing datasets with Python",
+                    "url": "/"
+                },
+                {
+                    "icon": "arrowupright",
+                    "title": "Exploring machine learning algorithms",
+                    "url": "/"
+                }
+            ]
+        }
+    ],
+    "login_form": {
+        "button": "Login",
+        "password_protection": {
+          "eye": "eye",
+          "eye_off": "eye_off"
+        },
+        "email": {
+          "name": "email",
+          "placeholder": "Email / Username",
+          "label": "Email / Username *",
+          "icon": "enevelop"
+        },
+        "password": {
+          "name": "password",
+          "placeholder": "Password",
+          "label": "Password *",
+          "icon": "password"
+        },
+        "checkbox": {
+          "name": "term & condition",
+          "label": "Accept Terms And Conditions"
+        }
+      },
+      "signup_form": {
+        "button": "Sign Up",
+        "password_protection": {
+          "eye": "eye",
+          "eye_off": "eye_off"
+        },
+        "username": {
+          "name": "username",
+          "placeholder": "Username",
+          "label": "Username *",
+          "icon": "User"
+        },
+        "email": {
+          "name": "email",
+          "placeholder": "Email ",
+          "label": "Email*",
+          "icon": "enevelop"
+        },
+        "password": {
+          "name": "password",
+          "placeholder": "Password",
+          "label": "Password *",
+          "icon": "password"
+        }
+      }
+}

@@ -1,0 +1,27 @@
+{
+    "footer": {
+        "logo": "Skilline",
+        "label": "Virtual Class for Zoom",
+        "subscribe": {
+            "name": "subscribe",
+            "label": "Subscribe to get our Newsletter",
+            "placeholder": "Your Email",
+            "button": "Subscribe"
+        },
+        "links": [
+            {
+                "label": "Careers",
+                "url": "/"
+            },
+            {
+                "label": "Privacy Policy",
+                "url": "/"
+            },
+            {
+                "label": "Terms & Conditions",
+                "url": "/"
+            }
+        ],
+        "copyright": "© 2024 Skilline Educations."
+    }
+}

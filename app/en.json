@@ -1,0 +1,117 @@
+{
+    "banner": {
+        "heading": "Studying",
+        "title": " Online is now much easier",
+        "label": "Skilline is an interesting platform that will teach you in more an interactive way",
+        "image": "/image/skilline-girls.jpg",
+        "join_button": "Join For Free",
+        "join_url": "/",
+        "watch": "Watch how it works",
+        "youtube_link": "https://www.youtube.com/embed/VMVvUNfZyRU?si=kmWcV4TUa1_BHdDn"
+    },
+    "banner_card": {
+        "calander": {
+            "icon": "calender",
+            "title": "250K",
+            "label": "Assisted Student"
+        },
+        "placement": {
+            "icon": "award",
+            "title": "100K",
+            "label": "Placed Student"
+        }
+    },
+    "Trusted_label": "Trusted by 5,000+ Companies Worldwide",
+    "Trusted": [
+        "/Trusted/airbnb.png",
+        "/Trusted/amazon.png",
+        "/Trusted/netfilix.png",
+        "/Trusted/grab.png",
+        "/Trusted/grab.png",
+        "/Trusted/grab.png"
+    ],
+    "card_item": {
+        "carddata": {
+            "heading": "Management System",
+            "title": "All-In-One",
+            "label": "Streamlining education with comprehensive tools for online classes, tutorial notes, and video content."
+        },
+        "card": [
+            {
+                "icon": "meeting",
+                "title": "Online Classes & Tutorials",
+                "label": "Online classes and tutorials offer accessible learning opportunities. They provide flexibility and convenience for diverse educational pursuits and goals"
+            },
+            {
+                "icon": "document",
+                "title": "Tutorials Notes & Documents",
+                "label": "Tutorial notes and documents are invaluable resources for learning. They provide clarity, guidance, and reference material for effective comprehension and retention."
+            },
+            {
+                "icon": "video",
+                "title": "Free & Paid Tutorials",
+                "label": "Both free and paid tutorials offer valuable learning experiences. Free options provide accessibility, while paid ones often offer more comprehensive content."
+            }
+        ]
+    },
+    "blog_item": {
+        "blogdata": {
+            "title": "Lastest News and Resources",
+            "label": "See the developments that have occurred to Skillines in the world"
+        },
+        "news": {
+            "image": "/blog/Unlocking-Learning.png",
+            "label": "News",
+            "title": "Unlocking Learning: The Power of Online Classes & Tutorials",
+            "description": "Discover the boundless potential of online classes and tutorials. Explore how these dynamic resources empower learners with flexibility, accessibility, and diverse educational opportunities",
+            "button": "Read More"
+        },
+        "blogs": [
+            {
+                "image": "/blog/Mastering-Education.jpg",
+                "label": "PRESS RELEASE",
+                "title": "Mastering Education: The Role of Tutorial Notes & Documents",
+                "description": "Explore the indispensable role of tutorial notes and documents in mastering education. Discover how these resources offer clarity, guidance, and essential reference materials to enhance comprehension and retention."
+            },
+            {
+                "image": "/blog/Navigating-Learning-Paths.jpg",
+                "label": "Blog",
+                "title": "Navigating Learning Paths: Exploring Free & Paid Tutorials",
+                "description": "Embark on a journey through diverse learning avenues with our guide, comparing the benefits of free and paid tutorials. Discover which path suits your educational goals best."
+            },
+            {
+                "image": "/blog/Efficiency-in-Education.jpg",
+                "label": "Blog",
+                "title": "Efficiency in Education: How an All-In-One Management System Can Help",
+                "description": "Discover the transformative impact of an All-In-One Management System on education. Learn how this comprehensive platform streamlines learning processes, boosts productivity, and enhances educational experiences for students and educators alike."
+            }
+        ]
+    },
+    "ImageTextLayout": {
+        "image_position": {
+            "order": 2,
+            "image": "/platform.png"
+        },
+        "content_position": {
+            "order": 1,
+            "slug": "INTEGRATIONS",
+            "title": "200+ educational tools and platform",
+            "heading": "integrations",
+            "label": "Schoology has every tool your classroom needs and comes pre-integrated with more than 200+ tools, student information systems (SIS), and education platforms.",
+            "button": "See All Integrations"
+        }
+    },
+    "ImageTextLayout_two": {
+        "image_position": {
+            "order": 1,
+            "image": "/testimonials.png"
+        },
+        "content_position": {
+            "order": 2,
+            "slug": "TESTIMONIAL",
+            "title": "What They Say?",
+            "label": "Skilline has got more than 100k positive ratings from our users around the world. Some of the students and teachers were greatly helped by the Skilline. Are you too? Please give your assessment",
+            "button": "Write your assessment"
+        }
+    }
+}
