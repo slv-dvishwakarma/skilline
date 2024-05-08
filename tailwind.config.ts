@@ -23,7 +23,8 @@ const config: Config = {
         paragraph: 'var(--paragraph)',
         section: 'var(--section_bg)',
         blog_title: 'var(--blog_title)',
-        common: 'var(--common_title)'
+        common: 'var(--common_title)',
+        code_code: 'var(--code_code)'
       },
       keyframes: {
         slideInDown: {
@@ -59,6 +60,7 @@ const config: Config = {
       },
     },
   },
+  darkMode: 'class',
   plugins: [],
 };
 export default config;

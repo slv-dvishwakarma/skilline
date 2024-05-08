@@ -22,7 +22,7 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar }) => {
 
   const pathName = usePathname();
 
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const handleToggle = () => {
     setToggle(!toggle);
   };
@@ -36,7 +36,7 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar }) => {
             <button type='button' ><SVGIcon className="text-lg" name={toggle ? "ArrowUp" : "ArrowDown"} /></button>
           </div>
           {toggle && (
-            <ul className='text-blog_title py-3 space-y-3'>
+            <ul className='text-blog_title py-3 space-y-6'>
               {item.sub_category.map((category, index) => (
                 <li key={index}><Link href={category.url} className={`text-[16px] ${pathName === category.url ? "text-secondary" : "text-blog_title"}`}>{category.title}</Link></li>
               ))}

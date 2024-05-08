@@ -1,3 +1,6 @@
+import { Code } from '@/components/Code';
+import { Note } from '@/components/Note';
+import { Terminal } from '@/components/Terminal';
 import Link from 'next/link';
 import React from 'react';
 
@@ -6,16 +9,26 @@ interface LearnItem {
   url: string;
 }
 
+interface NoteItem {
+  icon: string;
+  title: string;
+  label: string;
+}
+
 interface DataItem {
   label: string;
   chapter?: string;
   video?: string;
   learn?: LearnItem[];
+  code?: string;
+  notes?: NoteItem;
+
 }
 
 interface CourseData {
   title: string;
   data: DataItem[];
+  codeString?: string;
 }
 
 interface RightBarProps {
@@ -36,11 +49,14 @@ export const RightBar: React.FC<RightBarProps> = ({ course }) => {
                 <h3 className='mdx-heading text-common  mt-0 mb-3 leading-tight text-2xl font-display leading-9 font-bold my-6'>{item.chapter}</h3>
                 <ul className='space-y-2 pl-[22px]'>
                   {item.learn?.map((menu, index) => (
-                    <li className='text-common list-disc' key={index}><Link  href={menu.url}>{menu.title}</Link></li>
+                    <li className='text-common list-disc hover:text-secondary' key={index}><Link  href={menu.url}>{menu.title}</Link></li>
                   ))}
                 </ul>
               </div> 
               ): (null)}
+              <Terminal code={item.code} />
+              <Note notes={item.notes} />
+              <Code codeString={course.codeString}/>
               <div className='mt-4'>
               <iframe src={item.video} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  className='w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px]'></iframe>
             </div>

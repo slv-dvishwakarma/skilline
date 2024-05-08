@@ -19,6 +19,7 @@ body {
     --section_bg: #FFFFFF;
     --blog_title: #252641;
     --common_title: #000000;
+    --code_code: #FFFFFF;
   }
 
   .dark-mode {
@@ -32,5 +33,6 @@ body {
     --section_bg: #000000;
     --blog_title: #FFFFFF;
     --common_title: #FFFFFF;
+    --code_code: #5E687E;
   }
 
