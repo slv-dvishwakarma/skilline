@@ -5,7 +5,6 @@ import { ParentContainer } from "@/components/ParentContainer"
 import en from "./en.json"
 import { SideBar } from "./reactjs/SideBar"
 import { useState } from "react"
-import Index from "@/components/WysiwygEditor/WysiwygEditor"
 
 
 const CourceLayout = ({ children }: any) => {

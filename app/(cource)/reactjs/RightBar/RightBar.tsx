@@ -1,10 +1,11 @@
 "use client"
 import { Code } from '@/components/Code';
+import { QuillEditor } from '@/components/Editor/Editor';
+
 import { Note } from '@/components/Note';
 import { Terminal } from '@/components/Terminal';
-import Index from '@/components/WysiwygEditor/WysiwygEditor';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface LearnItem {
   title: string;
@@ -38,6 +39,13 @@ interface RightBarProps {
 }
 
 export const RightBar: React.FC<RightBarProps> = ({ course }) => {
+
+  const [content, setContent] = useState<string>('');
+
+  const handleChange = (value: string) => {
+      setContent(value);
+  };
+
   return (
     <>
       {course && (
@@ -63,7 +71,7 @@ export const RightBar: React.FC<RightBarProps> = ({ course }) => {
               <Terminal code={item.code} />
               <Note notes={item.notes} />
               <Code codeString={course.codeString}/>
-              <Index  />
+              <QuillEditor value={content} onChange={handleChange} />
             </div>
           ))}
         </div>
