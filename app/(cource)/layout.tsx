@@ -45,7 +45,7 @@ const CourceLayout = ({ children }: any) => {
               <span>course</span>
               <span onClick={handleClose}><SVGIcon className='shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] bg-white inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-secondary rounded-lg text-xl' name="RxCross2" /></span>
             </div>
-            <SideBar sidebar={en.sidebar} />
+            <SideBar sidebar={en.sidebar} close={handleClose}/>
           </div>
         </div>
       )}

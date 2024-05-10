@@ -136,6 +136,24 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login
     }, [signup]);
 
     useEffect(() => {
+        const isUrlActive = (url: string) => pathName === url;
+        const isMenuActive = mainmenu.some(menu => {
+            if (menu.url && isUrlActive(menu.url)) {
+                return true;
+            }
+            if (menu.max_menu) {
+                return menu.max_menu.some(item => isUrlActive(item.url));
+            }
+    
+            return false;
+        });
+        if (isMenuActive) {
+            setIsOpen(false);
+            setIsDropdownOpen(false);
+        }
+    }, [pathName, mainmenu]);
+
+    useEffect(() => {
         if (isDarkMode) {
             document.body.classList.add('dark-mode');
         } else {

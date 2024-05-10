@@ -2,7 +2,7 @@
 import { SVGIcon } from '@/components/Icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface CategoryItem {
   title: string;
@@ -16,13 +16,27 @@ interface SidebarItem {
 
 interface SideBarProps {
   sidebar: SidebarItem[];
+  close?: () => void
 }
 
-export const SideBar: React.FC<SideBarProps> = ({ sidebar }) => {
+export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
 
   const pathName = usePathname();
 
   const [toggle, setToggle] = useState(true);
+
+  useEffect(() => {
+    const isSidebarActive = sidebar.some(item => {
+      return item.sub_category.some(subItem => {
+        return subItem.url && subItem.url === pathName;
+      });
+    });
+  
+    if (isSidebarActive && close) {
+      close();
+    }
+  }, [pathName, sidebar, close]);
+
   const handleToggle = () => {
     setToggle(!toggle);
   };
