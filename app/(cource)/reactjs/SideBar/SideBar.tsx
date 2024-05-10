@@ -32,9 +32,9 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
       });
     });
   
-    if (isSidebarActive && close) {
-      close();
-    }
+    // if (isSidebarActive && close) {
+    //   close();
+    // }
   }, [pathName, sidebar, close]);
 
   const handleToggle = () => {
@@ -52,7 +52,8 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
           {toggle && (
             <ul className='text-blog_title py-3 space-y-6'>
               {item.sub_category.map((category, index) => (
-                <li key={index}><Link href={category.url} className={`text-[16px] ${pathName === category.url ? "text-secondary" : "text-blog_title"}`}>{category.title}</Link></li>
+                <li key={index} onClick={() => close?.()}
+                ><Link href={category.url} className={`text-[16px] ${pathName === category.url ? "text-secondary" : "text-blog_title"}`}>{category.title}</Link></li>
               ))}
             </ul>
           )}

@@ -1,6 +1,8 @@
+"use client"
 import { Code } from '@/components/Code';
 import { Note } from '@/components/Note';
 import { Terminal } from '@/components/Terminal';
+import Index from '@/components/WysiwygEditor/WysiwygEditor';
 import Link from 'next/link';
 import React from 'react';
 
@@ -42,7 +44,11 @@ export const RightBar: React.FC<RightBarProps> = ({ course }) => {
         <div>
           <h2 className='mdx-heading mt-0 text-blog_title -mx-.5 break-words text-3xl font-display font-bold leading-tight'>{course.title}</h2>
           {course.data.map((item, index) => (
+            
             <div key={index}>
+              <div className='mt-4'>
+              <iframe src={item.video} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  className='w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px]'></iframe>
+            </div>
               <p className='whitespace-pre-wrap my-4 font-display text-xl text-common leading-relaxed'>{item.label}</p>
               {item.chapter ? (
               <div className='p-6 rounded-xl border border-solid border-[gray]'>
@@ -57,9 +63,7 @@ export const RightBar: React.FC<RightBarProps> = ({ course }) => {
               <Terminal code={item.code} />
               <Note notes={item.notes} />
               <Code codeString={course.codeString}/>
-              <div className='mt-4'>
-              <iframe src={item.video} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  className='w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px]'></iframe>
-            </div>
+              <Index  />
             </div>
           ))}
         </div>

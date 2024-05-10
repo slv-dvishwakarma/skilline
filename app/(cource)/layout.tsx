@@ -5,6 +5,7 @@ import { ParentContainer } from "@/components/ParentContainer"
 import en from "./en.json"
 import { SideBar } from "./reactjs/SideBar"
 import { useState } from "react"
+import Index from "@/components/WysiwygEditor/WysiwygEditor"
 
 
 const CourceLayout = ({ children }: any) => {
@@ -25,7 +26,7 @@ const CourceLayout = ({ children }: any) => {
             </div>
             <div className="xl:hidden lg:hidden md:flex flex gap-3 items-center cursor-pointer" onClick={handleCourse}>
                 <SVGIcon className="text-xl text-secondary" name="HamburgerMenu" />
-                <p className="text-blog_title">course</p>
+                <p className="text-blog_title">Index</p>
             </div>
         </div>
         <GridBox columns={3} gap={10} className='py-[20px]'>
@@ -36,6 +37,7 @@ const CourceLayout = ({ children }: any) => {
             </GridBox.GridItem>
             <GridBox.GridItem columnMerge={2}>
                 {children}
+                {/* <Index  /> */}
             </GridBox.GridItem>
         </GridBox>
         {toggle && (
