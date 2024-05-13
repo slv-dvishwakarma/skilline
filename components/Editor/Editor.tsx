@@ -103,12 +103,14 @@ export const QuillEditor: React.FC<QuillEditorProps> = ({
   };
 
   return (
-    <ReactQuill
-      ref={quillRef}
-      theme="snow"
-      value={value || ""}
-      onChange={onChange}
-      modules={modules}
-    />
+    <div className="mt-5">
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={value || ""}
+        onChange={onChange}
+        modules={modules}
+      />
+    </div>
   );
 };
