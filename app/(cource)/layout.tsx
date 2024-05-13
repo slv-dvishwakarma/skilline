@@ -1,19 +1,60 @@
 "use client";
+// "use server";
 import { GridBox } from "@/components/GridBox";
 import { SVGIcon } from "@/components/Icons";
 import { ParentContainer } from "@/components/ParentContainer";
 import en from "./en.json";
 import { SideBar } from "./reactjs/SideBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { serverActions } from "@/serverActions";
+import { startMirageServer } from "@/miragejs/server";
 
 const CourceLayout = ({ children }: any) => {
   const [toggle, setToggle] = useState(false);
+  const [data, setData] = useState<any>(null);
+  startMirageServer();
 
   const handleCourse = () => {
     setToggle(true);
   };
   const handleClose = () => {
     setToggle(false);
+  };
+
+  const configHome: any = [
+    {
+      id: "sub_bar",
+      url: "side-bar",
+      method: "GET",
+    },
+  ];
+  const saveSidebarChanges = async (updatedData: any) => {
+    const config: any = [
+      {
+        id: "sub_bar",
+        url: "side-bar",
+        method: "POST",
+        data: updatedData,
+      },
+    ];
+
+    await serverActions(config);
+    console.log(updatedData);
+  };
+  useEffect(() => {
+    const entityData: any = async () => {
+      setData(await serverActions(configHome));
+    };
+    entityData();
+  }, []);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  const removeItem = async (index: number) => {
+    const updatedData = data?.sub_bar?.success.sub_category;
+    updatedData.splice(index, 1);
+    await saveSidebarChanges({ ...data?.sub_bar });
   };
 
   return (
@@ -37,7 +78,9 @@ const CourceLayout = ({ children }: any) => {
           className="xl:block lg:block md:hidden hidden"
         >
           <div className="shadow-[rgba(149,157,165,0.2)_0px_8px_24px] border p-5 rounded-xl border-solid border-white">
-            <SideBar data={en.sidebar} />
+            {data?.sub_bar?.success && (
+              <SideBar data={data?.sub_bar?.success} removeItem={removeItem} />
+            )}
           </div>
         </GridBox.GridItem>
         <GridBox.GridItem columnMerge={2}>
@@ -57,7 +100,13 @@ const CourceLayout = ({ children }: any) => {
                 />
               </span>
             </div>
-            <SideBar data={en.sidebar} close={handleClose} />
+            {data?.sub_bar?.success && (
+              <SideBar
+                data={data?.sub_bar?.success}
+                close={handleClose}
+                removeItem
+              />
+            )}
           </div>
         </div>
       )}

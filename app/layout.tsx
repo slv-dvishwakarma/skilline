@@ -4,7 +4,7 @@ import { ParentContainer } from "@/components/ParentContainer";
 import { Header } from "@/components/template/Header";
 import { Footer } from "@/components/template/Footer";
 import Providers from "@/Redux/Providers";
-
+import { startMirageServer } from "../miragejs/server";
 export const metadata: Metadata = {
   title: "Skilline",
   description: "Learning Platform",
@@ -15,6 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  startMirageServer();
   return (
     <html lang="en">
       <head>

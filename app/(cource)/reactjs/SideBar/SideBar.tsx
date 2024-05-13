@@ -2,7 +2,8 @@
 import { SVGIcon } from "@/components/Icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 interface CategoryItem {
   title: string;
@@ -17,23 +18,16 @@ interface SidebarItem {
 interface SideBarProps {
   data: SidebarItem;
   close?: () => void;
+  removeItem: (index: number) => void; // Function to remove item
 }
 
-export const SideBar: React.FC<SideBarProps> = ({ data, close }) => {
+export const SideBar: React.FC<SideBarProps> = ({
+  data,
+  close,
+  removeItem,
+}) => {
   const pathName = usePathname();
-
   const [toggle, setToggle] = useState(true);
-
-  useEffect(() => {
-    // const isSidebarActive = sidebar.some((item) => {
-    //   return data?.sub_category.some((subItem) => {
-    //     return subdata?.url && subdata?.url === pathName;
-    //   });
-    // });
-    // if (isSidebarActive && close) {
-    //   close();
-    // }
-  }, [pathName, data, close]);
 
   const handleToggle = () => {
     setToggle(!toggle);
@@ -41,7 +35,6 @@ export const SideBar: React.FC<SideBarProps> = ({ data, close }) => {
 
   return (
     <div className="SideBar shadow p-3 rounded-lg">
-      {/* {sidebar.map((item, index) => ( */}
       <div>
         <div
           className="flex items-center justify-between text-blog_title cursor-pointer text-common"
@@ -59,22 +52,26 @@ export const SideBar: React.FC<SideBarProps> = ({ data, close }) => {
           <ul className="text-blog_title py-3 space-y-6">
             {data?.sub_category?.map((category, index) => (
               <li key={index} onClick={() => close?.()}>
-                <Link
-                  href={category.url}
-                  className={`text-[16px] ${
-                    pathName === category.url
-                      ? "text-secondary"
-                      : "text-blog_title"
-                  }`}
-                >
-                  {category.title}
-                </Link>
+                <div className="flex items-center justify-between">
+                  <Link
+                    href={category.url}
+                    className={`text-[16px] ${
+                      pathName === category.url
+                        ? "text-secondary"
+                        : "text-blog_title"
+                    }`}
+                  >
+                    {category.title}
+                  </Link>
+                  <button type="button" onClick={() => removeItem(index)}>
+                    <MdOutlineDeleteOutline />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
-      {/* ))} */}
     </div>
   );
 };
