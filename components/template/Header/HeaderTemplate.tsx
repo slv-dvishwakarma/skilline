@@ -1,11 +1,13 @@
 "use client";
+import { authActions } from "@/Redux/Reducers/authReducer";
 import { SVGIcon } from "@/components/Icons";
 import { LoginPopup } from "@/components/Popup/LoginPopup";
 import { SignUpPopup } from "@/components/Popup/SignUpPopup";
+import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 interface InputItem {
   name: string;
   placeholder: string;
@@ -184,7 +186,15 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
       window.removeEventListener("scroll", handleScroll);
     };
   }, [open]);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(authActions.SET_ADMIN({ is_admin: false }));
+    window.location.reload();
+  };
 
+  const isUserLoggedIn = localStorage.getItem("token") !== null;
+  console.log(isUserLoggedIn);
   return (
     <>
       <nav
@@ -239,20 +249,26 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
               </button>
             ) : null}
           </div>
+
           <div className="order-3 hidden xl:block lg:block md:block hidden xl:gap-5 lg:gap-5 md:gap-10  xl:flex lg:flex md:flex items-center justify-between">
             <button
               type="button"
-              className="bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] px-[30px] py-2"
-              onClick={handleLogin}
+              className={classNames(
+                "bg-white  text-black cursor-pointer text-[15px] rounded-[80px] px-[30px] py-2",
+                !isUserLoggedIn
+                  ? "shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)]"
+                  : ""
+              )}
+              onClick={() => !isUserLoggedIn && handleLogin()}
             >
-              {content.login}
+              {isUserLoggedIn ? (admin ? "Admin" : "User") : content.login}
             </button>
             <button
               type="button"
               className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2"
-              onClick={handleSignup}
+              onClick={isUserLoggedIn ? handleLogout : handleSignup}
             >
-              {content.signup}
+              {isUserLoggedIn ? "Logout" : content.signup}
             </button>
             <button
               type="button"
@@ -280,6 +296,7 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
               </button>
             ) : null}
           </div>
+
           <div
             className="hidden w-full xl:block lg:block md:hidden md:w-auto xl:order-2 lg:order-2"
             id="navbar-dropdown"
@@ -508,22 +525,41 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
                   </div>
                 </div>
               ) : null}
-              <div className="gap-10 flex fixed w-full px-3 py-2.5 border-t-secondary bg-primary border-t border-solid bottom-0">
-                <button
-                  type="button"
-                  className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2 w-full"
-                  onClick={handleLogin}
-                >
-                  {content.login}
-                </button>
-                <button
-                  type="button"
-                  className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2 w-full"
-                  onClick={handleSignup}
-                >
-                  {content.signup}
-                </button>
-              </div>
+              {isUserLoggedIn ? (
+                <div className="gap-10 flex fixed w-full px-3 py-2.5 border-t-secondary bg-primary border-t border-solid bottom-0">
+                  <div
+                    // type="button"
+                    className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2 w-full"
+                    // onClick={handleLogin}
+                  >
+                    {admin ? "Admin" : "User"}
+                  </div>
+                  <button
+                    type="button"
+                    className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2 w-full"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="gap-10 flex fixed w-full px-3 py-2.5 border-t-secondary bg-primary border-t border-solid bottom-0">
+                  <button
+                    type="button"
+                    className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2 w-full"
+                    onClick={handleLogin}
+                  >
+                    {content.login}
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2 w-full"
+                    onClick={handleSignup}
+                  >
+                    {content.signup}
+                  </button>
+                </div>
+              )}
             </div>
           ) : null}
         </div>

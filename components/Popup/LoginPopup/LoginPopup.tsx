@@ -49,14 +49,14 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({
   const onSubmit = (data: any) => {
     const fakeCredentials = [
       {
-        email: "admin@gmail.com",
-        password: "admin@123",
+        email: "admin",
+        password: "123",
         username: "admin",
         role: "admin",
       },
       {
-        email: "user@gmail.com",
-        password: "user@123",
+        email: "user",
+        password: "123",
         username: "user",
         role: "user",
       },
@@ -98,7 +98,7 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({
               <span className="input-border flex items-center border rounded-md border-solid border-[#BEBEBE] px-2.5">
                 <SVGIcon className="text-sm text-[#9D9D9D]" name={email.icon} />
                 <input
-                  type="email"
+                  type="text"
                   className="form-control w-full border-none rounded-md focus:outline-none focus:shadow-none shadow-none h-[50px] placeholder:text-[#9D9D9D] text-[14px] px-3"
                   placeholder={email.placeholder}
                   autoComplete="off"
