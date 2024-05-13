@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
+    "@reduxjs/toolkit": "^2.2.4",
     "@types/draft-js": "^0.11.18",
     "classnames": "^2.5.1",
     "contenido": "^1.2.13",
+    "cookies-next": "^4.1.1",
     "draft-convert": "^2.1.13",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
@@ -23,8 +25,10 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-hook-form": "^7.51.3",
     "react-quill": "^2.0.0",
+    "react-redux": "^9.1.2",
     "react-slick": "^0.30.2",
     "react-syntax-highlighter": "^15.5.0",
+    "redux": "^5.0.1",
     "slick-carousel": "^1.8.1",
     "tailwindcss": "^3.4.3"
   },

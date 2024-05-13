@@ -3,6 +3,7 @@ import "./globals.css";
 import { ParentContainer } from "@/components/ParentContainer";
 import { Header } from "@/components/template/Header";
 import { Footer } from "@/components/template/Footer";
+import Providers from "@/Redux/Providers";
 
 export const metadata: Metadata = {
   title: "Skilline",
@@ -34,13 +35,15 @@ export default function RootLayout({
         <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
       </head>
       <body>
-        <ParentContainer className="bg-primary">
-          <Header />
-        </ParentContainer>
-        {children}
-        <ParentContainer className="bg-footer_bg">
-          <Footer />
-        </ParentContainer>
+        <Providers>
+          <ParentContainer className="bg-primary">
+            <Header />
+          </ParentContainer>
+          {children}
+          <ParentContainer className="bg-footer_bg">
+            <Footer />
+          </ParentContainer>
+        </Providers>
       </body>
     </html>
   );
