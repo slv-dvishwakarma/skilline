@@ -93,7 +93,7 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    console.log(admin);
+    setAdmin(admin);
   }, [isAdmin]);
   const handlemegamenu = () => {
     setIsDropdownOpen(!isDropdownOpen);
