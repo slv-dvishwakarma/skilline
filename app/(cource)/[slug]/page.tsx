@@ -1,10 +1,9 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import en from '../en.json'; 
-import learn from './learn.json'; 
-import { RightBar } from '../reactjs/RightBar';
-
+"use client";
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import en from "../en.json";
+import learn from "./learn.json";
+import { RightBar } from "../reactjs/RightBar";
 
 interface SubCategory {
   title: string;
@@ -28,9 +27,9 @@ interface CourseData {
 const Page = () => {
   const [pageData, setPageData] = useState<CourseData[]>([]);
   const pathname = usePathname();
-  
+
   useEffect(() => {
-    const activeSubCategories = en.sidebar
+    const activeSubCategories = [en.sidebar]
       .flatMap((category: SidebarItem) => category.sub_category)
       .filter((subCategory: SubCategory) => subCategory.url === pathname)
       .map((subCategory: SubCategory) => subCategory.title);

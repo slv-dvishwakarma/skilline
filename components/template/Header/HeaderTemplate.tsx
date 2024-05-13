@@ -194,7 +194,6 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
   };
 
   const isUserLoggedIn = localStorage.getItem("token") !== null;
-  console.log(isUserLoggedIn);
   return (
     <>
       <nav
