@@ -1,6 +1,6 @@
 import { authActions } from "@/Redux/Reducers/authReducer";
 import { SVGIcon } from "@/components/Icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -68,6 +68,7 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({
       (cred) => cred.email === email && cred.password === password
     );
     if (user) {
+      console.log(user);
       if (user.role === "admin") {
         localStorage.setItem("token", "admin");
         dispatch(authActions.SET_ADMIN({ is_admin: true }));
@@ -82,6 +83,7 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({
       window.location.reload();
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className=" mb-5 mt-3 space-y-4">
       <div className="email_field">

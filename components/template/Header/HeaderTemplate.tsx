@@ -93,9 +93,12 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
   useEffect(() => {
-    setAdmin(admin);
+    const token = localStorage.getItem("token");
+    dispatch(authActions.SET_ADMIN({ is_admin: token == "admin" }));
+  }, [isAdmin]);
+  useEffect(() => {
+    setAdmin(isAdmin);
   }, [isAdmin]);
   const handlemegamenu = () => {
     setIsDropdownOpen(!isDropdownOpen);

@@ -13,7 +13,7 @@ export interface AuthType {
   isProcessing: string | null;
   token: string | null;
   resetForm: boolean;
-  isAdmin: boolean;
+  isAdmin: boolean | null;
   authOptions: ActionType;
   authPost: ActionType;
 }
@@ -22,7 +22,7 @@ const initialState: AuthType = {
   processLoading: false,
   token: null,
   profile_pic: null,
-  isAdmin: false,
+  isAdmin: null,
   isProcessing: null,
   resetForm: false,
   authOptions: {
@@ -82,8 +82,8 @@ const authReducer = createSlice({
       state.resetForm = action.payload.action;
     },
     SET_ADMIN: (state, action) => {
-      state.isAdmin = action.payload;
-      console.log(action.payload);
+      state.isAdmin = action.payload.is_admin;
+      console.log(state.isAdmin);
       setCookie("isadmin", action.payload.is_admin);
     },
     //Auth Option

@@ -10,30 +10,19 @@ export function startMirageServer({ environment = "development" } = {}) {
     },
 
     seeds(server) {
-      server.create("sidebarItem", {
-        id: 0,
-        title: "Installation",
-        url: "/installation",
-      });
-      server.create("sidebarItem", {
-        id: 1,
-        title: "Add React to an Existing Project",
-        url: "/add-react-to-an-existing-project",
-      });
-      server.create("sidebarItem", {
-        id: 2,
-        title: "Editor Setup",
-        url: "/editor-setup",
-      });
-      server.create("sidebarItem", {
-        id: 3,
-        title: "Using TypeScript",
-        url: "/using-typeScript",
-      });
-      server.create("sidebarItem", {
-        id: 4,
-        title: "React Developer Tools",
-        url: "/react-developer-tools",
+      server.db.loadData({
+        sidebar: [
+          {
+            id: 0,
+            title: "Installation",
+            url: "/installation",
+          },
+          {
+            id: 1,
+            title: "Add React to an Existing Project",
+            url: "/add-react-to-an-existing-project",
+          },
+        ],
       });
     },
 
@@ -44,17 +33,19 @@ export function startMirageServer({ environment = "development" } = {}) {
       this.get("/side-bar", (schema) => {
         return {
           category: "GET STARTED",
-          sub_category: schema.sidebarItems.all().models.map((item) => ({
-            title: item.title,
-            url: item.url,
-          })),
+          sub_category: schema.db.sidebar,
         };
       });
 
       // Route handlers for POST, PUT, DELETE remain unchanged
       this.post("/side-bar", (schema, request) => {
         let newItem = JSON.parse(request.requestBody);
-        schema.sidebarItems.create(newItem);
+        schema.db.sidebar.remove();
+        console.log(schema.db.sidebar);
+
+        newItem?.sub_category.forEach((item) => {
+          schema.db.sidebar.insert(item);
+        });
         return schema.sidebarItems.all();
       });
 

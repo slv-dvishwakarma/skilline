@@ -28,7 +28,11 @@ const CourceLayout = ({ children }: any) => {
       method: "GET",
     },
   ];
+  const entityData: any = async () => {
+    setData(await serverActions(configHome));
+  };
   const saveSidebarChanges = async (updatedData: any) => {
+    console.log(updatedData);
     const config: any = [
       {
         id: "sub_bar",
@@ -39,12 +43,10 @@ const CourceLayout = ({ children }: any) => {
     ];
 
     await serverActions(config);
-    console.log(updatedData);
+    entityData();
   };
+
   useEffect(() => {
-    const entityData: any = async () => {
-      setData(await serverActions(configHome));
-    };
     entityData();
   }, []);
   useEffect(() => {
@@ -54,7 +56,21 @@ const CourceLayout = ({ children }: any) => {
   const removeItem = async (index: number) => {
     const updatedData = data?.sub_bar?.success.sub_category;
     updatedData.splice(index, 1);
-    await saveSidebarChanges({ ...data?.sub_bar });
+    await saveSidebarChanges({ ...data?.sub_bar.success });
+  };
+
+  const addItem = async (item: number) => {
+    const updatedData = data?.sub_bar?.success.sub_category;
+    updatedData.push(item);
+
+    await saveSidebarChanges({ ...data?.sub_bar.success });
+  };
+
+  const replaceItem = async (item: any, index: number) => {
+    const updatedData = data?.sub_bar?.success.sub_category;
+    updatedData.splice(index, 1, item);
+
+    await saveSidebarChanges({ ...data?.sub_bar.success });
   };
 
   return (
@@ -79,7 +95,12 @@ const CourceLayout = ({ children }: any) => {
         >
           <div className="shadow-[rgba(149,157,165,0.2)_0px_8px_24px] border p-5 rounded-xl border-solid border-white">
             {data?.sub_bar?.success && (
-              <SideBar data={data?.sub_bar?.success} removeItem={removeItem} />
+              <SideBar
+                data={data?.sub_bar?.success}
+                removeItem={removeItem}
+                addItem={addItem}
+                replaceItem={(data, index) => replaceItem(data, index)}
+              />
             )}
           </div>
         </GridBox.GridItem>
@@ -100,13 +121,13 @@ const CourceLayout = ({ children }: any) => {
                 />
               </span>
             </div>
-            {data?.sub_bar?.success && (
+            {/* {data?.sub_bar?.success && (
               <SideBar
                 data={data?.sub_bar?.success}
                 close={handleClose}
-                removeItem
+                // removeItem
               />
-            )}
+            )} */}
           </div>
         </div>
       )}
