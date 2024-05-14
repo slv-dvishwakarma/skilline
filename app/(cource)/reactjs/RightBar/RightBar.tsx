@@ -1,12 +1,13 @@
-"use client"
-import { Code } from '@/components/Code';
-import { QuillEditor } from '@/components/Editor/Editor';
-
-import { Note } from '@/components/Note';
-import { Terminal } from '@/components/Terminal';
-import Link from 'next/link';
-import React, { useState } from 'react';
-
+import { Code } from "@/components/Code";
+import { Note } from "@/components/Note";
+import { Terminal } from "@/components/Terminal";
+import VideoComponent from "@/components/VideoComponent";
+import Link from "next/link";
+import React, { Fragment, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { QuillEditor } from "@/components/Editor/Editor";
+import { serverActions } from "@/serverActions";
+import BulletLinkBox from "@/components/BulletLinkBox";
 interface LearnItem {
   title: string;
   url: string;
@@ -25,7 +26,6 @@ interface DataItem {
   learn?: LearnItem[];
   code?: string;
   notes?: NoteItem;
-
 }
 
 interface CourseData {
@@ -35,45 +35,68 @@ interface CourseData {
 }
 
 interface RightBarProps {
-  course: CourseData | null;
+  data: CourseData | null;
 }
 
-export const RightBar: React.FC<RightBarProps> = ({ course }) => {
-
-  const [content, setContent] = useState<string>('');
-
+export const RightBar: React.FC<RightBarProps> = ({ data }) => {
+  console.log(data);
+  const { isAdmin } = useSelector((state: any) => state.auth);
+  const [content, setContent] = useState<string>("");
+  const [bulkData, setBulkData] = useState<any>(null);
   const handleChange = (value: string) => {
-      setContent(value);
+    setContent(value);
   };
 
+  const configHome: any = [
+    {
+      id: "component_gallery",
+      url: "component-gallery",
+      method: "GET",
+    },
+  ];
+  const entityData: any = async () => {
+    const data = await serverActions(configHome);
+    if (data?.component_gallery?.success) {
+      setBulkData(data?.component_gallery?.success);
+    }
+  };
+  useEffect(() => {
+    entityData();
+  }, []);
+  useEffect(() => {
+    console.log(bulkData);
+  }, [bulkData]);
+  const components: any = {
+    ["videoComponent"]: VideoComponent,
+    ["bulletBox"]: BulletLinkBox,
+    ["codeBox"]: Terminal,
+    ["noteView"]: Note,
+    ["noteEditor"]: QuillEditor,
+  };
   return (
     <>
-      {course && (
+      {bulkData && (
         <div>
-          <h2 className='mdx-heading mt-0 text-blog_title -mx-.5 break-words text-3xl font-display font-bold leading-tight'>{course.title}</h2>
-          {course.data.map((item, index) => (
-            
-            <div key={index}>
-              <div className='mt-4'>
-              <iframe src={item.video} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  className='w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px]'></iframe>
-            </div>
-              <p className='whitespace-pre-wrap my-4 font-display text-xl text-common leading-relaxed'>{item.label}</p>
-              {item.chapter ? (
-              <div className='p-6 rounded-xl border border-solid border-[gray]'>
-                <h3 className='mdx-heading text-common  mt-0 mb-3 leading-tight text-2xl font-display leading-9 font-bold my-6'>{item.chapter}</h3>
-                <ul className='space-y-2 pl-[22px]'>
-                  {item.learn?.map((menu, index) => (
-                    <li className='text-common list-disc hover:text-secondary' key={index}><Link  href={menu.url}>{menu.title}</Link></li>
-                  ))}
-                </ul>
-              </div> 
-              ): (null)}
-              <Terminal code={item.code} />
-              <Note notes={item.notes} />
-              <Code codeString={course.codeString}/>
-              <QuillEditor value={content} onChange={handleChange} />
-            </div>
-          ))}
+          <h2 className="mdx-heading mt-0 text-blog_title -mx-.5 break-words text-3xl font-display font-bold leading-tight">
+            {bulkData?.header}
+          </h2>
+          {/* {data.data.map((item, index) => ( */}
+          <div>
+            {bulkData?.data?.map((item: any, index: number) => {
+              const Component = components[item?.type];
+              return (
+                <Fragment key={index}>
+                  {Component && <Component data={item} admin={isAdmin} />}
+                </Fragment>
+              );
+            })}
+
+            {/* <Terminal code={item.code} />
+            <Note notes={item.notes} />
+            <Code codeString={data.codeString} />
+            <QuillEditor value={content} onChange={handleChange} /> */}
+          </div>
+          {/* ))} */}
         </div>
       )}
     </>

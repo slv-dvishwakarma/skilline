@@ -44,7 +44,7 @@ const Page = () => {
   return (
     <div>
       {pageData.map((course, index) => (
-        <RightBar key={index} course={course} />
+        <RightBar key={index} data={course} />
       ))}
     </div>
   );

@@ -7,12 +7,12 @@ import { RxCross2 } from "react-icons/rx";
 
 const VideoComponent = ({ data, admin, handlePost }: any) => {
   const [edit, setEdit] = useState(false);
-  const [value, setValue] = useState(data?.label);
+  const [value, setValue] = useState(data?.description);
   return (
     <>
       <div className="relative h-fit">
         <iframe
-          src={data?.video}
+          src={data?.url}
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           className="w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px]"
@@ -54,7 +54,7 @@ const VideoComponent = ({ data, admin, handlePost }: any) => {
 
         {edit && (
           <EditPopup
-            initialValue={data?.video}
+            initialValue={data?.url}
             onCancel={() => setEdit(false)}
             onSubmit={() => console.log("dfsc")}
             // onChange={onChange}
@@ -70,7 +70,7 @@ const VideoComponent = ({ data, admin, handlePost }: any) => {
             className="w-full outline-none"
           />
         ) : (
-          data?.label
+          data?.description
         )}
       </p>
     </>

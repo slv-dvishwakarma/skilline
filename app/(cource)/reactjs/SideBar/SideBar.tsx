@@ -135,7 +135,7 @@ export const SideBar: React.FC<SideBarProps> = ({
       </div>
       {showAddPopup && (
         <div
-          className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
+          className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[90]"
           onClick={() => setShowAddPopup(false)}
         >
           <div
@@ -171,7 +171,12 @@ export const SideBar: React.FC<SideBarProps> = ({
               >
                 Save
               </button>
-              <button onClick={() => setShowAddPopup(false)} className="px-3">
+              <button
+                onClick={() => {
+                  setShowAddPopup(false);
+                }}
+                className="px-3"
+              >
                 Cancel
               </button>
             </div>
