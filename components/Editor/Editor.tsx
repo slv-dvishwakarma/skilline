@@ -1,6 +1,8 @@
+import classNames from "classnames";
 import React, { useRef, useEffect } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 // Define custom fonts
 const Font = Quill.import("formats/font");
@@ -66,11 +68,13 @@ Quill.register(Font, true);
 interface QuillEditorProps {
   value: string;
   onChange: (content: string) => void;
+  admin?: boolean;
 }
 
 export const QuillEditor: React.FC<QuillEditorProps> = ({
   value,
   onChange,
+  admin,
 }) => {
   const quillRef = useRef<ReactQuill | null>(null);
 
@@ -103,7 +107,7 @@ export const QuillEditor: React.FC<QuillEditorProps> = ({
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 relative">
       <ReactQuill
         ref={quillRef}
         theme="snow"
@@ -111,6 +115,22 @@ export const QuillEditor: React.FC<QuillEditorProps> = ({
         onChange={onChange}
         modules={modules}
       />
+      {admin && (
+        <div className="absolute top-[-15px] right-0 flex items-center gap-2 z-40">
+          <button
+            type="button"
+            onClick={() => {
+              //   removeItem(index);
+            }}
+            className={classNames(
+              "rounded-full bg-white",
+              "  p-1 shadow-2xl border "
+            )}
+          >
+            <MdOutlineDeleteOutline />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

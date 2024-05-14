@@ -63,15 +63,16 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
   useEffect(() => {
     entityData();
   }, []);
-  useEffect(() => {
-    console.log(bulkData);
-  }, [bulkData]);
+
   const components: any = {
     ["videoComponent"]: VideoComponent,
     ["bulletBox"]: BulletLinkBox,
     ["codeBox"]: Terminal,
     ["noteView"]: Note,
     ["noteEditor"]: QuillEditor,
+  };
+  const onSave = (data: any) => {
+    console.log(data);
   };
   return (
     <>
@@ -80,23 +81,18 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
           <h2 className="mdx-heading mt-0 text-blog_title -mx-.5 break-words text-3xl font-display font-bold leading-tight">
             {bulkData?.header}
           </h2>
-          {/* {data.data.map((item, index) => ( */}
           <div>
             {bulkData?.data?.map((item: any, index: number) => {
               const Component = components[item?.type];
               return (
                 <Fragment key={index}>
-                  {Component && <Component data={item} admin={isAdmin} />}
+                  {Component && (
+                    <Component data={item} admin={isAdmin} onSave={onSave} />
+                  )}
                 </Fragment>
               );
             })}
-
-            {/* <Terminal code={item.code} />
-            <Note notes={item.notes} />
-            <Code codeString={data.codeString} />
-            <QuillEditor value={content} onChange={handleChange} /> */}
           </div>
-          {/* ))} */}
         </div>
       )}
     </>
