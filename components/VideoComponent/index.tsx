@@ -65,7 +65,7 @@ const VideoComponent = ({ data, admin, onSave, removeItem }: any) => {
           />
         )}
       </div>
-      <p className="whitespace-pre-wrap my-4 font-display text-xl text-common leading-relaxed w-full">
+      <p className="whitespace-pre-wrap  font-display text-xl text-common leading-relaxed w-full">
         {edit ? (
           <textarea
             rows={5}

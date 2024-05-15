@@ -87,6 +87,25 @@ const BulletLinkBox = ({ data, admin, onSave, removeItem }: any) => {
           />
         )}
       </ul>
+      {admin && (
+        <div className="absolute top-[-12px] right-0 flex items-center gap-2 z-40">
+          <button
+            type="button"
+            onClick={() => {
+              removeItem(data);
+              setEdit(false);
+            }}
+            className={classNames(
+              edit
+                ? "rounded-md bg-orange-500 text-white"
+                : "rounded-full bg-white",
+              "  p-1 shadow-2xl border "
+            )}
+          >
+            {edit ? "Save" : <MdOutlineDeleteOutline />}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

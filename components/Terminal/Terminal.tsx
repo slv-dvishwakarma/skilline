@@ -37,7 +37,7 @@ export const Terminal: React.FC<TerminalProps> = ({
   return (
     <>
       {data ? (
-        <div className="my-[20px] relative">
+        <div className="relative">
           <div className="terminal bg-[#4E5769] text-white flex justify-between text-[13px]  px-5 py-[10px]">
             <span className="flex gap-3 items-center">
               <SVGIcon name="terminal" />

@@ -109,7 +109,7 @@ export const QuillEditor: React.FC<any> = ({
   };
 
   return (
-    <div className="mt-5 relative">
+    <div className="relative">
       <ReactQuill
         ref={quillRef}
         theme="snow"

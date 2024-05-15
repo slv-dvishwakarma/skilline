@@ -105,7 +105,7 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
           <h2 className="mdx-heading mt-0 text-blog_title -mx-.5 break-words text-3xl font-display font-bold leading-tight">
             {bulkData?.header}
           </h2>
-          <div>
+          <div className="flex flex-col gap-8">
             {bulkData?.data?.map((item: any, index: number) => {
               const Component = components[item?.type];
               return (
