@@ -6,6 +6,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RiEditLine } from "react-icons/ri";
+import SmallPopUp from "@/components/AlertPopup/smallPopUp";
+import DeleteConfirmation from "@/components/AlertPopup";
 
 interface CategoryItem {
   title: string;
@@ -68,6 +70,7 @@ export const SideBar: React.FC<SideBarProps> = ({
       inputRef.current.focus();
     }
   }, [showAddPopup]);
+  const [deleteConfirm, setDeleteConfirm] = useState<any>(null);
   return (
     <div className="SideBar shadow p-3 rounded-lg">
       <div>
@@ -113,7 +116,7 @@ export const SideBar: React.FC<SideBarProps> = ({
                       <button
                         type="button"
                         onClick={() => {
-                          removeItem(index);
+                          setDeleteConfirm(index);
                         }}
                       >
                         <MdOutlineDeleteOutline />
@@ -134,54 +137,24 @@ export const SideBar: React.FC<SideBarProps> = ({
         )}
       </div>
       {showAddPopup && (
-        <div
-          className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[90]"
-          onClick={() => setShowAddPopup(false)}
-        >
-          <div
-            className="bg-white p-4 rounded-lg flex flex-col gap-3"
-            onClick={(e: any) => e.stopPropagation()}
-          >
-            <input
-              type="text"
-              ref={inputRef}
-              value={newItem.title}
-              onChange={(e) =>
-                setNewItem({ ...newItem, title: e.target.value })
-              }
-              onKeyDown={handleKeyDown}
-              placeholder="Title"
-              className="w-full outline-none"
-            />
-            <input
-              type="text"
-              value={newItem.url}
-              onChange={(e) => setNewItem({ ...newItem, url: e.target.value })}
-              onKeyDown={handleKeyDown}
-              placeholder="URL"
-              className="w-full outline-none"
-            />
-            <div>
-              <button
-                onClick={() => handleSaveItem()}
-                className={`px-3 rounded-md bg-orange-400 text-white ${
-                  isSaveDisabled && "opacity-50 cursor-not-allowed"
-                }`}
-                disabled={isSaveDisabled}
-              >
-                Save
-              </button>
-              <button
-                onClick={() => {
-                  setShowAddPopup(false);
-                }}
-                className="px-3"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <SmallPopUp
+          showAddPopup={showAddPopup}
+          setShowAddPopup={setShowAddPopup}
+          addItem={addItem}
+          newItem={newItem}
+          setNewItem={setNewItem}
+        />
+      )}
+
+      {deleteConfirm !== null && (
+        <DeleteConfirmation
+          message="selete cheyala"
+          onConfirm={() => {
+            removeItem(deleteConfirm);
+            setDeleteConfirm(null);
+          }}
+          onCancel={() => setDeleteConfirm(null)}
+        />
       )}
     </div>
   );

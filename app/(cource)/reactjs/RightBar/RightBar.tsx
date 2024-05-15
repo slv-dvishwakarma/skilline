@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { QuillEditor } from "@/components/Editor/Editor";
 import { serverActions } from "@/serverActions";
 import BulletLinkBox from "@/components/BulletLinkBox";
+import DeleteConfirmation from "@/components/AlertPopup";
 interface LearnItem {
   title: string;
   url: string;
@@ -42,6 +43,7 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
   console.log(data);
   const { isAdmin } = useSelector((state: any) => state.auth);
   const [content, setContent] = useState<string>("");
+  const [showPopUp, setShowPopUp] = useState<any>(null);
   const [bulkData, setBulkData] = useState<any>(null);
   const handleChange = (value: string) => {
     setContent(value);
@@ -52,6 +54,7 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
       id: "component_gallery",
       url: "component-gallery",
       method: "GET",
+      cache: true,
     },
   ];
   const entityData: any = async () => {
@@ -72,7 +75,28 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
     ["noteEditor"]: QuillEditor,
   };
   const onSave = (data: any) => {
-    console.log(data);
+    const index = bulkData?.data.findIndex((obj: any) => obj.id === data?.id);
+    const mainData = bulkData;
+    console.log(index);
+    if (index !== -1) {
+      // If object with ID 12 exists, replace it
+      mainData?.data?.splice(index, 1, data);
+    } else {
+      // If object with ID 12 doesn't exist, add it
+      mainData?.data.push(data);
+    }
+    console.log(mainData);
+  };
+  const removeItem = (data: any) => {
+    const index = bulkData?.data.findIndex((obj: any) => obj.id === data?.id);
+    const mainData = bulkData;
+    console.log(index);
+    if (index !== -1) {
+      // If object with ID 12 exists, replace it
+      mainData?.data?.splice(index, 1);
+    }
+    console.log(mainData);
+    setShowPopUp(null);
   };
   return (
     <>
@@ -87,12 +111,24 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
               return (
                 <Fragment key={index}>
                   {Component && (
-                    <Component data={item} admin={isAdmin} onSave={onSave} />
+                    <Component
+                      data={item}
+                      admin={isAdmin}
+                      onSave={onSave}
+                      removeItem={setShowPopUp}
+                    />
                   )}
                 </Fragment>
               );
             })}
           </div>
+          {showPopUp && (
+            <DeleteConfirmation
+              message="selete cheyala"
+              onConfirm={() => removeItem(showPopUp)}
+              onCancel={() => setShowPopUp(false)}
+            />
+          )}
         </div>
       )}
     </>

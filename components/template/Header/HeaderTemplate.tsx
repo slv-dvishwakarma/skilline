@@ -193,7 +193,6 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
   const handleLogout = () => {
     localStorage.removeItem("token");
     dispatch(authActions.SET_ADMIN({ is_admin: false }));
-    window.location.reload();
   };
 
   const isUserLoggedIn = localStorage.getItem("token") !== null;

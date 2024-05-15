@@ -15,7 +15,7 @@ interface NoteProps {
   admin?: boolean;
 }
 
-export const Note: React.FC<any> = ({ data, admin }) => {
+export const Note: React.FC<any> = ({ data, admin, removeItem, onSave }) => {
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState(data?.code);
   return (
@@ -26,7 +26,16 @@ export const Note: React.FC<any> = ({ data, admin }) => {
             <SVGIcon name={data?.icon} />
             <span>{data?.heading}</span>
           </div>
-          <p className="whitespace-pre-wrap my-4 text-white">{data?.code}</p>
+          {edit ? (
+            <textarea
+              // type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              className="text-white bg-transparent w-full outline-none h-full"
+            />
+          ) : (
+            <p className="whitespace-pre-wrap my-4 text-white">{value}</p>
+          )}
           {admin && (
             <div className="absolute top-[-33px] right-0 flex items-center gap-2 z-40">
               <button
@@ -47,7 +56,8 @@ export const Note: React.FC<any> = ({ data, admin }) => {
               <button
                 type="button"
                 onClick={() => {
-                  //   removeItem(index);
+                  edit ? onSave({ ...data }) : removeItem(data);
+                  setEdit(false);
                 }}
                 className={classNames(
                   edit

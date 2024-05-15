@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RiEditLine } from "react-icons/ri";
 
-const EditPopup = ({ onChange, onCancel, initialValue }: any) => {
+const EditPopup = ({ onChange, onCancel, initialValue, onSubmit }: any) => {
   const [url, setUrl] = useState(initialValue);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -80,7 +80,6 @@ export const LoginPopup: React.FC<LoginPopupProps> = ({
         dispatch(authActions.SET_ADMIN({ is_admin: false }));
       }
       reset();
-      window.location.reload();
     }
   };
 

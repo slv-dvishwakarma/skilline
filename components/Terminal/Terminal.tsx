@@ -9,9 +9,16 @@ interface TerminalProps {
     code?: any;
   };
   admin?: any;
+  onSave?: any;
+  removeItem?: any;
 }
 
-export const Terminal: React.FC<TerminalProps> = ({ data, admin }) => {
+export const Terminal: React.FC<TerminalProps> = ({
+  data,
+  admin,
+  onSave,
+  removeItem,
+}) => {
   const [copied, setCopied] = useState(false);
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState(data?.code);
@@ -45,7 +52,15 @@ export const Terminal: React.FC<TerminalProps> = ({ data, admin }) => {
             </span>
           </div>
           <div className="command bg-[#5E687E] px-5 py-[3px] text-white h-20 items-center flex">
-            <p>{data?.code}</p>
+            {edit ? (
+              <input
+                className="outline-none w-full bg-transparent tex-white"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+            ) : (
+              <p>{data?.code}</p>
+            )}
           </div>
           {admin && (
             <div className="absolute top-[-12px] right-0 flex items-center gap-2 z-40">
@@ -67,7 +82,8 @@ export const Terminal: React.FC<TerminalProps> = ({ data, admin }) => {
               <button
                 type="button"
                 onClick={() => {
-                  //   removeItem(index);
+                  edit ? onSave({ ...data, code: value }) : removeItem(data);
+                  setEdit(false);
                 }}
                 className={classNames(
                   edit

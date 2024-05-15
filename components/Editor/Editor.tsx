@@ -71,13 +71,15 @@ interface QuillEditorProps {
   admin?: boolean;
 }
 
-export const QuillEditor: React.FC<QuillEditorProps> = ({
+export const QuillEditor: React.FC<any> = ({
   value,
+  data,
   onChange,
   admin,
+  removeItem,
 }) => {
   const quillRef = useRef<ReactQuill | null>(null);
-
+  console.log(data);
   useEffect(() => {
     if (quillRef.current) {
       const editor = quillRef.current.getEditor();
@@ -120,7 +122,7 @@ export const QuillEditor: React.FC<QuillEditorProps> = ({
           <button
             type="button"
             onClick={() => {
-              //   removeItem(index);
+              removeItem(data);
             }}
             className={classNames(
               "rounded-full bg-white",

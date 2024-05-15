@@ -5,9 +5,10 @@ import EditPopup from "../PopUpComponent";
 import classNames from "classnames";
 import { RxCross2 } from "react-icons/rx";
 
-const VideoComponent = ({ data, admin, handlePost }: any) => {
+const VideoComponent = ({ data, admin, onSave, removeItem }: any) => {
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState(data?.description);
+  const [url, setUrl] = useState(data?.url);
   return (
     <>
       <div className="relative h-fit">
@@ -38,7 +39,10 @@ const VideoComponent = ({ data, admin, handlePost }: any) => {
             <button
               type="button"
               onClick={() => {
-                //   removeItem(index);
+                edit
+                  ? onSave({ ...data, description: value, url: url })
+                  : removeItem(data);
+                setEdit(false);
               }}
               className={classNames(
                 edit
@@ -56,7 +60,7 @@ const VideoComponent = ({ data, admin, handlePost }: any) => {
           <EditPopup
             initialValue={data?.url}
             onCancel={() => setEdit(false)}
-            onSubmit={() => console.log("dfsc")}
+            onChange={setUrl}
             // onChange={onChange}
           />
         )}
