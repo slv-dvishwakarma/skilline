@@ -1,11 +1,11 @@
 "use client";
-// "use server";
+
 import { GridBox } from "@/components/GridBox";
 import { SVGIcon } from "@/components/Icons";
 import { ParentContainer } from "@/components/ParentContainer";
 import en from "./en.json";
 import { SideBar } from "./reactjs/SideBar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { serverActions } from "@/serverActions";
 import { startMirageServer } from "@/miragejs/server";
 
@@ -28,10 +28,12 @@ const CourceLayout = ({ children }: any) => {
       method: "GET",
     },
   ];
-  const entityData: any = async () => {
+
+  const entityData = useCallback(async () => {
     setData(await serverActions(configHome));
-  };
-  const saveSidebarChanges = async (updatedData: any) => {
+  }, [configHome]);
+
+  const saveSidebarChanges = useCallback(async (updatedData: any) => {
     console.log(updatedData);
     const config: any = [
       {
@@ -44,11 +46,12 @@ const CourceLayout = ({ children }: any) => {
 
     await serverActions(config);
     entityData();
-  };
+  }, [entityData]);
 
   useEffect(() => {
     entityData();
-  }, []);
+  }, [entityData]);
+
   useEffect(() => {
     console.log(data);
   }, [data]);

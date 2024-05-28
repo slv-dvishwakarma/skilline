@@ -3,12 +3,14 @@ import { Note } from "@/components/Note";
 import { Terminal } from "@/components/Terminal";
 import VideoComponent from "@/components/VideoComponent";
 import Link from "next/link";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { QuillEditor } from "@/components/Editor/Editor";
 import { serverActions } from "@/serverActions";
 import BulletLinkBox from "@/components/BulletLinkBox";
 import DeleteConfirmation from "@/components/AlertPopup";
+import { ComponentSelector } from "@/components/ComponentSelector";
+
 interface LearnItem {
   title: string;
   url: string;
@@ -57,15 +59,17 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
       cache: true,
     },
   ];
-  const entityData: any = async () => {
+
+  const entityData = useCallback(async () => {
     const data = await serverActions(configHome);
     if (data?.component_gallery?.success) {
       setBulkData(data?.component_gallery?.success);
     }
-  };
+  }, [configHome]);
+
   useEffect(() => {
     entityData();
-  }, []);
+  }, [entityData]);
 
   const components: any = {
     ["videoComponent"]: VideoComponent,
@@ -73,31 +77,35 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
     ["codeBox"]: Terminal,
     ["noteView"]: Note,
     ["noteEditor"]: QuillEditor,
+    ["componentselector"]: ComponentSelector,
   };
+
   const onSave = (data: any) => {
     const index = bulkData?.data.findIndex((obj: any) => obj.id === data?.id);
     const mainData = bulkData;
     console.log(index);
     if (index !== -1) {
-      // If object with ID 12 exists, replace it
+      // If object with the same ID exists, replace it
       mainData?.data?.splice(index, 1, data);
     } else {
-      // If object with ID 12 doesn't exist, add it
+      // If object with the same ID doesn't exist, add it
       mainData?.data.push(data);
     }
     console.log(mainData);
   };
+
   const removeItem = (data: any) => {
     const index = bulkData?.data.findIndex((obj: any) => obj.id === data?.id);
     const mainData = bulkData;
     console.log(index);
     if (index !== -1) {
-      // If object with ID 12 exists, replace it
+      // If object with the same ID exists, remove it
       mainData?.data?.splice(index, 1);
     }
     console.log(mainData);
     setShowPopUp(null);
   };
+
   return (
     <>
       {bulkData && (
@@ -124,13 +132,14 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
           </div>
           {showPopUp && (
             <DeleteConfirmation
-              message="selete cheyala"
+              message="Are you sure you want to delete this item?"
               onConfirm={() => removeItem(showPopUp)}
               onCancel={() => setShowPopUp(false)}
             />
           )}
         </div>
       )}
+      <ComponentSelector />
     </>
   );
 };

@@ -93,10 +93,12 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     dispatch(authActions.SET_ADMIN({ is_admin: token == "admin" }));
-  }, [isAdmin]);
+  }, [dispatch]);
   useEffect(() => {
     setAdmin(isAdmin);
   }, [isAdmin]);
@@ -189,10 +191,12 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
       window.removeEventListener("scroll", handleScroll);
     };
   }, [open]);
-  const dispatch = useDispatch();
+
   const handleLogout = () => {
+    useEffect(() => {
     localStorage.removeItem("token");
     dispatch(authActions.SET_ADMIN({ is_admin: false }));
+  },);
   };
 
   const isUserLoggedIn = localStorage.getItem("token") !== null;
@@ -501,7 +505,7 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({
                     <div className="grid-item col-span-3 pt-11 bg-[#f0f0f0] border-l-[#d8d8d8] border-l border-solid">
                       <div className="xl:px-[60px] lg:px-[60px] md:px-[20px] px-[20px]">
                         <h2 className="text-[#757575] tracking-widest uppercase text-sm font-medium leading-[1.3] mb-3 pb-2 border-b-[#d8d8d8] border-b border-solid">
-                          {content.title_2}
+                          {content.title_2} 
                         </h2>
                         <div className="divide-y-2 ">
                           {mainmenu.map((stories, index) => (

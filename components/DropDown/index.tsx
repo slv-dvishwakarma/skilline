@@ -23,7 +23,7 @@ const DropDown = ({ options, handleDropDown, value }: any) => {
           <div className="p-2 border border-gray-300 rounded absolute bg-white  w-[200px] ">
             {options?.map((item: any, index: number) => {
               return (
-                <option
+                <option key={index}
                   value={index}
                   onClick={() => {
                     handleDropDown(item);

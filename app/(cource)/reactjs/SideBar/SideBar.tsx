@@ -72,7 +72,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   }, [showAddPopup]);
   const [deleteConfirm, setDeleteConfirm] = useState<any>(null);
   return (
-    <div className="SideBar shadow p-3 rounded-lg">
+    <div className="SideBar p-3 rounded-lg">
       <div>
         <div
           className="flex items-center justify-between text-blog_title cursor-pointer text-common"

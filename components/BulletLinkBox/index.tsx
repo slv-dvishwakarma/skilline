@@ -34,7 +34,7 @@ const BulletLinkBox = ({ data, admin, onSave, removeItem }: any) => {
       <ul className="space-y-2 pl-[22px]">
         {data?.points?.map((menu: any, index: number) =>
           menu ? (
-            <div className="flex justify-between">
+            <div key={index} className="flex justify-between">
               <li
                 className="text-common list-disc hover:text-secondary"
                 key={index}
