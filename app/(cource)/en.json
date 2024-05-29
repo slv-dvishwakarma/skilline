@@ -3,7 +3,7 @@
     "title": "React. Js",
     "sidebar": [
         {
-            "category": "GET STARTED",
+            "category": "Get Started",
             "sub_category": [
                 {
                     "title": "Installation",
@@ -28,7 +28,7 @@
             ]
         },
         {
-            "category": "GET STARTED",
+            "category": "Describing the UI",
             "sub_category": [
                 {
                     "title": "Installation",
@@ -53,7 +53,7 @@
             ]
         },
         {
-            "category": "GET STARTED",
+            "category": "Adding Interactivity",
             "sub_category": [
                 {
                     "title": "Installation",
@@ -78,7 +78,7 @@
             ]
         },
         {
-            "category": "GET STARTED",
+            "category": "Managing State",
             "sub_category": [
                 {
                     "title": "Installation",

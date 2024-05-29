@@ -23,7 +23,7 @@ export const Courses: React.FC<CoursesProps> = ({ course }) => {
     return (
         <div className='Courses py-[50px]'>
             <h2 className='text-secondary text-[40px] font-semibold text-center'>{course.title}</h2>
-            <GridBox columns={4} gap={7} className='pt-[30px] xl:space-y-0 lg:space-y-0 md:space-y-0 space-y-10'>
+            <GridBox columns={4} desktop={4} laptop={4} tablet={2} gap={7} className='pt-[30px] xl:space-y-0 lg:space-y-0 md:space-y-0 space-y-10'>
                 {course.card.map((item, index) => (
                     <GridBox.GridItem columnMerge={1} key={index} className='shadow-[rgba(149,157,165,0.2)_0px_8px_24px] group rounded-xl'>
                         <Link href={item.page_url} >

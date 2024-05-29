@@ -142,5 +142,29 @@
                 "description": "30-Day JavaScript Coding Challenge"
             }
         ]
+    },
+    "Practice": {
+        "title": "Practice for Free",
+        "label": "The best free resources for Coding Interviews. Period.",
+        "plans": [
+            "Organized study plans and roadmaps (Blind 75, Neetcode 150).",
+            "Detailed video explanations.",
+            "Public Discord community with over 30,000 members.",
+            "Sign in to save your progress."
+        ],
+        "buttons": [
+            {
+                "name": "Start Practicing",
+                "url": "/"
+            },
+            {
+                "name": "View Roadmap",
+                "url": "/"
+            },
+            {
+                "name": "Join Discord",
+                "url": "/"
+            }
+        ]
     }
 }
