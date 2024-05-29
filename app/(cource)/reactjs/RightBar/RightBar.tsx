@@ -1,6 +1,7 @@
 "use client"
 import { Code } from '@/components/Code';
 import { Compiler } from '@/components/Compiler';
+import { PythonCompiler } from '@/components/Compiler/PythonCompiler';
 import GenericDropdown from '@/components/ComponentSelector/ComponentSelector';
 import { QuillEditor } from '@/components/Editor/Editor';
 
@@ -90,6 +91,8 @@ export const RightBar: React.FC<RightBarProps> = ({ course }) => {
               <Terminal code={item.code} />
 
               <Compiler />
+
+{/* <PythonCompiler /> */}
 
               <Note notes={item.notes} />
               <Code codeString={course.codeString} />

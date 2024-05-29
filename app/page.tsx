@@ -5,6 +5,7 @@ import { Trusted } from "@/components/Home/Trusted";
 import { Card } from "@/components/Card";
 import { Blog } from "@/components/Blog";
 import { ImageTextLayout } from "@/components/ImageTextLayout";
+import { Courses } from "@/components/Courses";
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
       <ParentContainer className='bg-primary'>
         <Banner banner={en.banner} calander={en.banner_card.calander} placement={en.banner_card.placement} />
       </ParentContainer>
-      <ParentContainer className="bg-section border-y-[#FFF2E1] border-t border-solid border-b">
+      {/* <ParentContainer className="bg-section border-y-[#FFF2E1] border-t border-solid border-b">
         <Trusted image={en.Trusted} label={en.Trusted_label} />
       </ParentContainer>
       <ParentContainer className="bg-section border-y-[#FFF2E1] border-t border-solid border-b">
@@ -24,6 +25,9 @@ export default function Home() {
       </ParentContainer>
       <ParentContainer className="bg-section border-y-[#FFF2E1] border-t border-solid border-b">
         <Blog blogdata={en.blog_item.blogdata} news={en.blog_item.news} blogs={en.blog_item.blogs} />
+      </ParentContainer> */}
+      <ParentContainer className="bg-section border-y-[#FFF2E1] border-t border-solid border-b">
+        <Courses course={en.courses}/>
       </ParentContainer>
     </>
   );

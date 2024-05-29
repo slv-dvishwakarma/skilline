@@ -113,5 +113,34 @@
             "label": "Skilline has got more than 100k positive ratings from our users around the world. Some of the students and teachers were greatly helped by the Skilline. Are you too? Please give your assessment",
             "button": "Write your assessment"
         }
+    },
+    "courses": {
+        "title": "Courses",
+        "card": [
+            {
+                "page_url": "/installation",
+                "image": "/course/react.jpg",
+                "name": "React.Js Basic To Advance With Required Language",
+                "description": "Learn React.js: JavaScript library for building user interfaces with reusable components"
+            },
+            {
+                "page_url": "/installation",
+                "image": "/course/next.jpg",
+                "name": "Next.Js Basic To Advance",
+                "description": "Learn Next.Js JavaScript library for building user interfaces with reusable components"
+            },
+            {
+                "page_url": "/installation",
+                "image": "/course/python.jpg",
+                "name": "Python for Beginners",
+                "description": "Learn about the Python programming language."
+            },
+            {
+                "page_url": "/installation",
+                "image": "/course/challange.jpg",
+                "name": "30-Day JavaScript Coding Challenge",
+                "description": "30-Day JavaScript Coding Challenge"
+            }
+        ]
     }
 }
