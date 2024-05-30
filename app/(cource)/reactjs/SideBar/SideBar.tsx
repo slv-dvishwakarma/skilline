@@ -27,6 +27,9 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentEditData, setCurrentEditData] = useState<any>(null); // Stores the data being edited (category or subcategory)
   const [editType, setEditType] = useState<string>(''); // 'category' or 'subcategory'
+  
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<{ index: number; subIndex?: number | null }>({ index: -1, subIndex: null });
 
   useEffect(() => {
     const isSidebarActive = sidebarData.some(item => {
@@ -45,17 +48,31 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
   };
 
   const handleDeleteCategory = (index: number) => {
-    const updatedSidebar = sidebarData.filter((_, i) => i !== index);
-    setSidebarData(updatedSidebar);
-    setToggles(toggles.filter((_, i) => i !== index)); // Update toggles state as well
-    console.log(updatedSidebar);
+    setDeleteData({ index, subIndex: null });
+    setIsDeleteModalOpen(true);
   };
 
   const handleDeleteSubCategory = (categoryIndex: number, subCategoryIndex: number) => {
-    const updatedSidebar = [...sidebarData];
-    updatedSidebar[categoryIndex].sub_category = updatedSidebar[categoryIndex].sub_category.filter((_, i) => i !== subCategoryIndex);
-    setSidebarData(updatedSidebar);
-    console.log(updatedSidebar);
+    setDeleteData({ index: categoryIndex, subIndex: subCategoryIndex });
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    const { index, subIndex } = deleteData;
+
+    if (subIndex === null) {
+      // Delete category
+      const updatedSidebar = sidebarData.filter((_, i) => i !== index);
+      setSidebarData(updatedSidebar);
+      setToggles(toggles.filter((_, i) => i !== index)); // Update toggles state as well
+    } else {
+      // Delete subcategory
+      const updatedSidebar = [...sidebarData];
+      updatedSidebar[index].sub_category = updatedSidebar[index].sub_category.filter((_, i) => i !== subIndex);
+      setSidebarData(updatedSidebar);
+    }
+
+    setIsDeleteModalOpen(false);
   };
 
   const handleAddSubCategory = (categoryIndex: number) => {
@@ -63,7 +80,6 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
     const updatedSidebar = [...sidebarData];
     updatedSidebar[categoryIndex].sub_category = [...updatedSidebar[categoryIndex].sub_category, newSubCategory];
     setSidebarData(updatedSidebar);
-    console.log(updatedSidebar);
   };
 
   const openEditModal = (data: any, type: string) => {
@@ -111,7 +127,6 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
       updatedSidebar[categoryIndex].sub_category[subCategoryIndex] = { title: newData.title, url: newData.url };
       setSidebarData(updatedSidebar);
     }
-    console.log(sidebarData);
     closeModal();
   };
 
@@ -145,6 +160,12 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
         </div>
       ))}
       {isModalOpen && <Modal data={currentEditData} type={editType} onSave={saveChanges} onClose={closeModal} />}
+      {isDeleteModalOpen && (
+        <DeleteConfirmationModal
+          onConfirm={confirmDelete}
+          onCancel={() => setIsDeleteModalOpen(false)}
+        />
+      )}
     </div>
   );
 };
@@ -186,6 +207,23 @@ const Modal: React.FC<{ data: any, type: string, onSave: (data: any) => void, on
           <div className='pt-4 space-x-5'>
           <button onClick={handleSave} className='bg-secondary  text-white text-[15px] rounded-[80px] px-[30px] py-2'>Save</button>
           <button onClick={onClose} className='bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] px-[30px] py-2'>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DeleteConfirmationModal: React.FC<{ onConfirm: () => void, onCancel: () => void }> = ({ onConfirm, onCancel }) => {
+  return (
+    <div className="fixed inset-0 z-[999] bg-[#00000096]">
+      <div className="flex items-center justify-center min-h-screen">
+        <div className='relative bg-white xl:w-[30%] lg:w-[40%] md:w-[50%] w-[80%] mx-auto shadow-lg rounded-[20px] p-[20px]'>
+          <h2 className='text-[22px] font-semibold text-secondary'>Confirm Delete</h2>
+          <p className='pt-4'>Are you sure you want to delete this item?</p>
+          <div className='pt-4 space-x-5'>
+            <button onClick={onConfirm} className='bg-secondary text-white text-[15px] rounded-[80px] px-[30px] py-2'>Delete</button>
+            <button onClick={onCancel} className='bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] px-[30px] py-2'>Cancel</button>
           </div>
         </div>
       </div>
