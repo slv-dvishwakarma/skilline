@@ -2,6 +2,7 @@
 import { SVGIcon } from '@/components/Icons';
 import { LoginPopup } from '@/components/Popup/LoginPopup';
 import { SignUpPopup } from '@/components/Popup/SignUpPopup';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -80,7 +81,7 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login
 
     const [login, setLogin] = useState(false);
     const [signup, setSignup] = useState(false);
-    const [isSticky, setIsSticky] = useState(false);
+    // const [isSticky, setIsSticky] = useState(false);
     const [open, setOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -161,26 +162,26 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login
         }
     }, [isDarkMode]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!open && window.scrollY > 10) {
-                setIsSticky(true);
-            } else {
-                setIsSticky(false);
-            }
-        };
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         if (!open && window.scrollY > 10) {
+    //             setIsSticky(true);
+    //         } else {
+    //             setIsSticky(false);
+    //         }
+    //     };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [open]);
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => {
+    //         window.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, [open]);
 
     return (
         <>
-            <nav className={`dark:border-gray-700 ${isSticky ? 'shadow-[0_13px_35px_-12px_rgba(35,35,35,0.15)] fixed w-full z-[99] top-0 animate-animateSlideInDown bg-primary px-[4%] md:px-[3%] lg:px-[3%] xl:px-[5%] left-0' : ''}`} style={isSticky ? { animationDuration: ".5s", animationFillMode: "both", animationName: "slideInDown", transform: "translate3d(0, -100%, 0)" } : undefined}>
-                <div className="max-w-screen-xl flex items-center justify-between mx-auto xl:p-4 lg:p-3 md:p-4 p-4">
-                    <Link href="/" className="text-dark_text block xl:text-3xl lg:text-xl md:text-3xl text-3xl font-bold relative no-underline z-[1] after:bg-tertiary after:rounded after:content-[''] after:block xl:after:h-[40px] lg:after:h-[30px] md:after:h-[30px] after:h-[40px] after:left-[-10%] after:absolute after:rotate-45 xl:after:w-[40px] lg:after:w-[30px] md:after:w-[30px] after:w-[40px] after:z-[-1] after:top-0 leading-[46px] xl:order-1 lg:order-1 md:order-1 order-1"> Skilline</Link>
+            <nav className="dark:border-gray-700">
+                <div className="flex items-center justify-between mx-auto xl:p-2 lg:p-3 md:p-4 p-4">
+                    <Link href="/"><Image src="/skilline-logo.png" alt='Skilline' width={657} height={280} className='w-[150px]'/></Link>
                     <div className='xl:order-2 lg:order-2 md:order-2 order-3 flex items-center gap-3 lg:hidden'>
                         <button type='button' className='xl:hidden lg:hidden md:hidden bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] w-[30px] h-[30px] flex justify-center items-center' onClick={toggleDarkMode}>{!isDarkMode ? <SVGIcon name={content.light} /> : <SVGIcon name={content.dark} />}</button>
                         {!isOpen ? (

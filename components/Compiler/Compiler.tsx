@@ -28,7 +28,7 @@ export const Compiler = () => {
   };
 
   return (
-    <div className="flex justify-center items-start pt-10 pb-10">
+    <div className="flex justify-center items-start pt-10 pb-10 z-[1]">
       <div className="w-full max-w-4xl p-4 border">
         <form onSubmit={handleSubmit}>
           <div className="">

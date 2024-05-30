@@ -97,7 +97,7 @@ export const RightBar: React.FC<RightBarProps> = ({ course }) => {
               <Note notes={item.notes} />
               <Code codeString={course.codeString} />
               <div className='pt-10 pb-10'>
-              <QuillEditor />
+              {/* <QuillEditor /> */}
               </div>
               <GenericDropdown options={options} />
             </div>

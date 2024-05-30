@@ -74,8 +74,6 @@ export const QuillEditor: React.FC<any> = ({
   value,
   data,
   onChange,
-  admin,
-  removeItem,
 }) => {
   const quillRef = useRef<ReactQuill | null>(null);
   console.log(data);
@@ -108,7 +106,7 @@ export const QuillEditor: React.FC<any> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-[1]">
       <ReactQuill
         ref={quillRef}
         theme="snow"
@@ -116,21 +114,6 @@ export const QuillEditor: React.FC<any> = ({
         onChange={onChange}
         modules={modules}
       />
-      {admin && (
-        <div className="absolute top-[-15px] right-0 flex items-center gap-2 z-40">
-          <button
-            type="button"
-            onClick={() => {
-              removeItem(data);
-            }}
-            className={classNames(
-              "rounded-full bg-white",
-              "  p-1 shadow-2xl border "
-            )}
-          >
-          </button>
-        </div>
-      )}
     </div>
   );
 };
