@@ -1,0 +1,44 @@
+{
+    "sidebar_title": {
+        "type": "sidebarCourse_title",
+        "props": {},
+        "content": {
+            "icon": "react",
+            "title": "React. Js"
+        }
+    },
+    "sidebar": {
+        "type": "sidebar",
+        "props": {},
+        "content": [
+            {
+                "parent_category": {
+                    "title": "Get Started",
+                    "url": ""
+                },
+                "sub_category": [
+                    {
+                        "title": "Installation",
+                        "url": "/installation"
+                    },
+                    {
+                        "title": "Add React to an Existing Project",
+                        "url": "/add-react-to-an-existing-project"
+                    },
+                    {
+                        "title": "Editor Setup",
+                        "url": "/editor-setup"
+                    },
+                    {
+                        "title": "Using TypeScript",
+                        "url": "/using-typeScript"
+                    },
+                    {
+                        "title": "React Developer Tools",
+                        "url": "/react-developer-tools"
+                    }
+                ]
+            }
+        ]
+    }
+}

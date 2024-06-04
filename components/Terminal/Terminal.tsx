@@ -1,44 +1,130 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { SVGIcon } from '../Icons';
 
 interface TerminalProps {
-    code?: string;
+    code: string;
+    onChange: (prop: any) => void;
+    onDelete: () => void;
 }
 
-export const Terminal: React.FC<TerminalProps> = ({ code }) => {
-
+export const Terminal: React.FC<TerminalProps> = ({ code, onChange, onDelete }) => {
     const [copied, setCopied] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [newCode, setNewCode] = useState(code);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
     const handleCopy = () => {
         if (code) {
             navigator.clipboard.writeText(code)
                 .then(() => {
                     setCopied(true);
-                    setTimeout(() => setCopied(false), 2000); 
+                    setTimeout(() => setCopied(false), 2000);
                 })
                 .catch(err => console.error('Failed to copy code: ', err));
         }
-    }
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
+        setNewCode(code);
+    };
+
+    const handleSave = () => {
+        onChange({ code: newCode });
+        setIsEditing(false);
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+    };
+
+    const handleDelete = () => {
+        setShowDeleteConfirmation(true);
+    };
+
+    const confirmDelete = () => {
+        onDelete();
+        setShowDeleteConfirmation(false);
+    };
+
+    const cancelDelete = () => {
+        setShowDeleteConfirmation(false);
+    };
 
     return (
         <>
-        {code ? (
-        <div className='my-[20px]'>
-        <div className='terminal bg-[#4E5769] text-white flex justify-between text-[13px]  px-5 py-[10px]'>
-            <span className='flex gap-3 items-center'>
-                <SVGIcon name="terminal" />
-                <p>Terminal</p>
-            </span>
-            <span className='flex gap-3 items-center cursor-pointer' onClick={handleCopy}>
-                <SVGIcon name="copy" />
-                <p>{copied ? 'Copied' : 'Copy'}</p>
-            </span>
-        </div>
-        <div className='command bg-[#5E687E] px-5 py-[3px] text-white h-20 items-center flex'>
-            <p>{code}</p>
-        </div>
-        </div>
-        ) : (null)}
+            <div className="my-[20px] relative">
+                <div className='absolute w-10 text-center right-0 flex items-center w-[10%] gap-3.5 -bottom-3.5'>
+                    <button onClick={handleEdit}>
+                        <SVGIcon
+                            className="bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] w-[30px] h-[30px] flex justify-center items-center"
+                            name="edit"
+                        />
+                    </button>
+                    <button onClick={handleDelete}>
+                        <SVGIcon
+                            className="bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] w-[30px] h-[30px] flex justify-center items-center"
+                            name="delete"
+                        />
+                    </button>
+                </div>
+                <div className="terminal bg-[#4E5769] text-white flex justify-between text-[13px] px-5 py-[10px]">
+                    <span className="flex gap-3 items-center">
+                        <SVGIcon name="terminal" />
+                        <p>Terminal</p>
+                    </span>
+                    <span className="flex gap-3 items-center cursor-pointer" onClick={handleCopy}>
+                        <SVGIcon name="copy" />
+                        <p>{copied ? 'Copied' : 'Copy'}</p>
+                    </span>
+                </div>
+                <div className="command bg-[#5E687E] px-5 py-[3px] text-white h-20 items-center flex">
+                    <p>{code}</p>
+                </div>
+            </div>
+
+            {isEditing ? (
+                <div className="fixed inset-0 overflow-y-auto z-[999] bg-[#00000096]">
+                    <div className="flex items-center justify-center min-h-screen">
+                        <div className="relative bg-white xl:w-[40%] lg:w-[50%] md:w-[60%] w-[90%] mx-auto shadow-lg rounded-[20px] p-[20px]">
+                            <h2 className="text-[22px] font-semibold text-secondary pb-3">Edit Code</h2>
+                            <textarea
+                                value={newCode}
+                                onChange={(e) => setNewCode(e.target.value)}
+                                autoFocus
+                                className="form-control w-full border rounded-md border-solid border-[#BEBEBE] focus:outline-none focus:shadow-none shadow-none h-[100px] placeholder:text-[#9D9D9D] text-[14px] px-3"
+                            />
+                            <div className="pt-4 space-x-5">
+                                <button onClick={handleSave} className="bg-secondary text-white text-[15px] rounded-[80px] px-[30px] py-2">
+                                    Save
+                                </button>
+                                <button onClick={handleCancel} className="bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] px-[30px] py-2">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : null}
+
+            {showDeleteConfirmation && (
+                <div className="fixed inset-0 z-[999] bg-[#00000096]">
+                    <div className="flex items-center justify-center min-h-screen">
+                        <div className="relative bg-white xl:w-[30%] lg:w-[40%] md:w-[50%] w-[80%] mx-auto shadow-lg rounded-[20px] p-[20px]">
+                            <h2 className="text-[22px] font-semibold text-secondary">Confirm Delete</h2>
+                            <p className="pt-4">Are you sure you want to delete this item?</p>
+                            <div className="pt-4 space-x-5">
+                                <button onClick={confirmDelete} className="bg-secondary text-white text-[15px] rounded-[80px] px-[30px] py-2">
+                                    Delete
+                                </button>
+                                <button onClick={cancelDelete} className="bg-white shadow-[1px_13px_10px_-2px_rgba(34,60,80,0.13)] text-black cursor-pointer text-[15px] rounded-[80px] px-[30px] py-2">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
-    )
-}
+    );
+};
