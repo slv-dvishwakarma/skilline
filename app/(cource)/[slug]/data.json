@@ -1,0 +1,59 @@
+[
+    {
+        "type": "title",
+        "props": {},
+        "content": [
+            {
+                "type": "text",
+                "text": "Installation"
+            }
+        ],
+        "children": []
+    },
+    {
+        "type": "description",
+        "props": {},
+        "content": [
+            {
+                "type": "text",
+                "text": "React JS -React is an open-source component-based front-end JavaScript library. It is used to create fast and interactive user interfaces for web and mobile applications. It is easy to create a dynamic application in React because it requires less coding and offer more functionality. It is used by big MNCs and fresh new startups"
+            }
+        ],
+        "children": []
+    },
+    {
+        "type": "YoutubeVideo",
+        "props": {},
+        "content": [
+            {
+                "type": "video",
+                "src": "https://www.youtube.com/embed/QFaFIcGhPoM?si=gga8au7zyx5lfrsN"
+            }
+        ],
+        "children": []
+    },
+    {
+        "type": "terminal",
+        "props": {},
+        "content": [
+            {
+                "type": "code",
+                "text": "npx create-react-app my-app"
+            }
+        ],
+        "children": []
+    },
+    {
+        "type": "note",
+        "props": {
+            "icon": "save"
+        },
+        "content": [
+            {
+                "title": "Notes",
+                "label": "Notes"
+            }
+        ],
+        "children": []
+    }
+]
