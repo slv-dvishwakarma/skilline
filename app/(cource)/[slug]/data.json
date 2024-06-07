@@ -45,15 +45,59 @@
     },
     {
         "type": "note",
-        "props": {
-            "icon": "save"
-        },
+        "props": {},
         "content": [
             {
+                "icon": "save",
                 "title": "Notes",
                 "label": "Notes"
             }
         ],
         "children": []
+    },
+    {
+        "type": "code",
+        "props": {},
+        "content": [
+            {
+                "codeString": "\nfunction Welcome(props) {\n  return <h1>Hello, {props.name}</h1>;\n}\n\nconst element = <Welcome name=\"Faisal Arkan\" />;\nReactDOM.render(\n  element,\n  document.getElementById('root')\n);\n"
+            }
+        ]
+    },
+    {
+        "type": "toc",
+        "props": {},
+        "content": [
+            {
+                "label": "Chapter",
+                "toc": [
+                    {
+                        "title": "Installation",
+                        "url": "/installation"
+                    },
+                    {
+                        "title": "Add React to an Existing Project",
+                        "url": "/add-react-to-an-existing-project"
+                    },
+                    {
+                        "title": "Editor Setup",
+                        "url": "/editor-setup"
+                    },
+                    {
+                        "title": "Using TypeScript",
+                        "url": "/using-typeScript"
+                    },
+                    {
+                        "title": "React Developer Tools",
+                        "url": "/react-developer-tools"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "editor",
+        "props": {},
+        "content": []
     }
 ]

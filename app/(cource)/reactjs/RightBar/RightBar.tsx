@@ -6,6 +6,9 @@ import { Terminal } from '@/components/Terminal';
 import { Title } from '@/components/Title';
 import { YoutubeVideo } from '@/components/YoutubeVideo';
 import { Note } from '@/components/Note';
+import { Code } from '@/components/Code';
+import { TOC } from '@/components/TOC';
+import { QuillEditor } from '@/components/Editor/Editor';
 
 interface RightBarProps {
   data: {
@@ -57,6 +60,9 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
     YoutubeVideo,
     terminal: Terminal,
     note: Note,
+    code: Code,
+    toc: TOC,
+    editor: QuillEditor,
   };
 
   return (
