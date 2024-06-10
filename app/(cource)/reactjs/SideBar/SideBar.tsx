@@ -47,7 +47,7 @@ export const SideBar: React.FC<SideBarProps> = ({ sidebar, close }) => {
         <div key={index}>
           <div className='flex items-center justify-between text-blog_title cursor-pointer text-common' onClick={handleToggle}>
             {item.parent_category.url === "" ? (
-            <h3 className="text-lg font-medium">{item.parent_category.title}</h3>
+            <h3 className="text-sm font-medium">{item.parent_category.title}</h3>
           ): (
             <Link href={item.parent_category.url} className="text-lg font-medium">{item.parent_category.title}</Link>
           )}

@@ -7,6 +7,7 @@ import { SideBar } from "./reactjs/SideBar"
 import { useState } from "react"
 
 
+
 const CourceLayout = ({ children }: any) => {
   const [toggle, setToggle] = useState(false);
 
@@ -17,11 +18,11 @@ const CourceLayout = ({ children }: any) => {
     setToggle(false);
   }
 
-  return <div className="w-full px-[4%] md:px-[3%] lg:px-[3%] xl:px-[5%] bg-section">
+  return <div className="w-full px-[4%] md:px-[3%] lg:px-[3%] xl:px-[5%] bg-[#F9FBFD]">
 
-    <GridBox columns={3} gap={10} className='py-[20px]'>
-      <GridBox.GridItem columnMerge={1} className="sticky bg-[#f8f8f8] border rounded h-fit p-2.5 border-solid border-[#ccc] top-0">
-        <div className="flex items-center justify-between">
+    <GridBox columns={4} gap={5} className='py-[10px]'>
+      <GridBox.GridItem columnMerge={1} className="sticky h-fit p-2.5 top-0">
+        {/* <div className="flex items-center justify-between">
           <div className="flex relative items-center gap-2.5 after:content-[''] after:w-full after:h-[3px] after:absolute after:bg-tertiary after:left-0 after:bottom-[-5px] xl:w-[200px] lg:w-[200px] md:w-[200px] w-[130px]">
             <SVGIcon className="text-xl text-secondary" name={sidebar.sidebar_title.content.icon} />
             <h1 className='text-blog_title text-xl'>{sidebar.sidebar_title.content.title}</h1>
@@ -30,12 +31,12 @@ const CourceLayout = ({ children }: any) => {
             <SVGIcon className="text-xl text-secondary" name="HamburgerMenu" />
             <p className="text-blog_title">Index</p>
           </div>
-        </div>
+        </div> */}
         <div className=" p-5 rounded-xl  xl:block lg:block md:hidden hidden mt-5 ">
           <SideBar sidebar={sidebar.sidebar.content} />
         </div>
       </GridBox.GridItem>
-      <GridBox.GridItem columnMerge={2} className="pt-3">
+      <GridBox.GridItem columnMerge={3} className="pt-3 border border-solid border-[#c7c7c7] bg-white">
         {children}
         {/* <Index  /> */}
       </GridBox.GridItem>

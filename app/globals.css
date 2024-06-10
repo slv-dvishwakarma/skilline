@@ -4,6 +4,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* @import url("https://cdn.jsdelivr.net/npm/@blocknote/mantine/dist/style.css"); */
+
+/* @import '@mantine/tiptap/styles.css'; */
+
+
 body {
     font-family: "Poppins", sans-serif;
 }
@@ -35,4 +41,125 @@ body {
     --common_title: #FFFFFF;
     --code_code: #5E687E;
   }
+
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+ 
+.item {
+    border-radius: 0.5rem;
+    flex: 1;
+    overflow: hidden;
+}
+ 
+.item.bordered {
+    border: 1px solid gray;
+}
+ 
+.item pre {
+    border-radius: 0.5rem;
+    height: 100%;
+    overflow: auto;
+    padding-block: 1rem;
+    padding-inline: 54px;
+    width: 100%;
+    white-space: pre-wrap;
+}
+
+
+.tiptap > * + * {
+    margin-top: 0.75em;
+}
+.tiptap ul, .tiptap ol {
+    padding: 0 1rem;
+}
+.tiptap h1, .tiptap h2, .tiptap h3, .tiptap h4, .tiptap h5, .tiptap h6 {
+    line-height: 1.1;
+}
+.tiptap code {
+    background-color: rgba(97, 97, 97, 0.1);
+    color: #616161;
+}
+.tiptap pre {
+    background: #0d0d0d;
+    color: #fff;
+    font-family: 'JetBrainsMono', monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+}
+.tiptap pre code {
+    color: inherit;
+    padding: 0;
+    background: none;
+    font-size: 0.8rem;
+}
+.tiptap img {
+    max-width: 100%;
+    height: auto;
+}
+.tiptap blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(13, 13, 13, 0.1);
+}
+.tiptap hr {
+    border: none;
+    border-top: 2px solid rgba(13, 13, 13, 0.1);
+    margin: 2rem 0;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    background-color: white;
+    color: black;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    box-shadow: inset 1px 1px 0 #bfbdbd;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    z-index: 1;
+  }
+  
+  .dropdown-content p {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content p:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+
+  .tiptap.ProseMirror {
+    padding: 10px;
+    height: 500px;
+    overflow: scroll;
+    border: 1px solid #f1f1f1;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.tiptap.ProseMirror:focus-visible {
+  outline: none;
+}
 

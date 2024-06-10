@@ -8,7 +8,10 @@ import { YoutubeVideo } from '@/components/YoutubeVideo';
 import { Note } from '@/components/Note';
 import { Code } from '@/components/Code';
 import { TOC } from '@/components/TOC';
-import { QuillEditor } from '@/components/Editor/Editor';
+import { BlockNoteEditor } from '@/components/BlocknoteEditor';
+import { Tiptap } from '@/components/Tiptap';
+
+
 
 interface RightBarProps {
   data: {
@@ -16,7 +19,7 @@ interface RightBarProps {
     type: string;
     props: object;
     content: object;
-    children: object;
+    children?: object;
   }[];
 }
 
@@ -62,7 +65,7 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
     note: Note,
     code: Code,
     toc: TOC,
-    editor: QuillEditor,
+    editor: Tiptap,
   };
 
   return (
@@ -88,7 +91,7 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
         );
       })}
       <code className='w-full overflow-x-scroll flex'>
-        <pre>{jsonString}</pre>
+        {/* <pre>{jsonString}</pre> */}
       </code>
     </div>
   );
