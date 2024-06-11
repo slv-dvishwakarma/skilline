@@ -1,3 +1,4 @@
+import { BlockNoteEditor } from '@/components/BlocknoteEditor'
 import { GridBox } from '@/components/GridBox'
 import { SVGIcon } from '@/components/Icons'
 import { ParentContainer } from '@/components/ParentContainer'
@@ -9,13 +10,21 @@ const Page = () => {
 
     const menu = [
         {
-            title: "Get Started",
-            url: "/started"
+            title: "Introduction",
+            url: "/Introduction"
+        },
+        {
+            title: "How Dashboard Looks",
+             url: "/dashboard",
+        },
+        {
+            title: "Compute Services:",
+             url: "/compute",
         },
         {
             title: "About",
              url: "/about",
-            submenu: [
+             submenu: [
                 {
                     title: "Company",
                     url: "/about/company"
@@ -24,16 +33,95 @@ const Page = () => {
                     title: "Team",
                     url: "/about/team"
                 },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
             ]
         },
+        {
+            title: "About",
+             url: "/about",
+             submenu: [
+                {
+                    title: "Company",
+                    url: "/about/company"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+            ]
+        },
+        {
+            title: "About",
+             url: "/about",
+             submenu: [
+                {
+                    title: "Company",
+                    url: "/about/company"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+                {
+                    title: "Team",
+                    url: "/about/team"
+                },
+            ]
+        }
     ];
 
     return (
-        <ParentContainer className='bg-[#F9FBFD]'>
-            <GridBox columns={4}>
-                <GridBox.GridItem columnMerge={1} className='my-5'>
+        <>
+        <div className='' id='editor-toolbar'>  </div>
+        <ParentContainer className='bg-[#F9FBFD] '>
+           
+            <div className='flex gap-[25px] sidebar'>
+                <div className='my-5 w-[22%] text-[#444746] font-roboto sticky h-fit p-2.5 top-0'>
                     <SVGIcon className="w-[35px] h-[35px] flex items-center justify-center rounded-[50%] bg-[transparent] hover:bg-[#F9FBFD]" name="arrowleft" />
-                    <ul className='space-y-2'>
+                    <ul className='space-y-2 overflow-y-auto h-[500px]'>
                         {menu.map((item, index) => (
                             <li key={index}>
                                 {item.submenu ? (
@@ -46,17 +134,20 @@ const Page = () => {
                                         </ul>
                                     </div>
                                 ) : (
-                                    <Link className='tracking-[0.25px] text-sm  before:content-["–"] before:text-[17px] before:mr-[5px]' href={item.url}>{item.title}</Link>
+                                    <Link className='tracking-[0.25px] text-sm  before:content-["–"] before:text-[17px] before:mr-[5px] text-[#0b57d0] font-medium' href={item.url}>{item.title}</Link>
                                 )}
                             </li>
                         ))}
                     </ul>
-                </GridBox.GridItem>
-                <GridBox.GridItem columnMerge={3}>
+                </div>
+                <div className='w-[78%] border border-solid border-[#c7c7c7] p-5 bg-white mt-[15px]'>
                     <Tiptap />
-                </GridBox.GridItem>
-            </GridBox>
+                    {/* <Tiptap /> */}
+                    
+                </div>
+            </div>
         </ParentContainer>
+        </>
     );
 };
 

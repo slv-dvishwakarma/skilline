@@ -179,7 +179,7 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login
 
     return (
         <>
-            <nav className="dark:border-gray-700">
+            <nav className="dark:border-gray-700 font-poppins">
                 <div className="flex items-center justify-between mx-auto xl:p-2 lg:p-3 md:p-4 p-4">
                     <Link href="/"><Image src="/skilline-logo.png" alt='Skilline' width={657} height={280} className='w-[150px]'/></Link>
                     <div className='xl:order-2 lg:order-2 md:order-2 order-3 flex items-center gap-3 lg:hidden'>
