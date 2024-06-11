@@ -116,8 +116,8 @@ const Page = () => {
         <>
             <div className='' id='editor-toolbar'>  </div>
             <ParentContainer className='bg-[#F9FBFD] '>
-                <div className='flex gap-[25px] sidebar'>
-                    <div className='w-[22%] text-[#444746] font-roboto sticky h-fit p-2.5 top-0 my-[10px]'>
+                <div className='xl:flex lg:flex md:flex block gap-[25px] sidebar'>
+                    <div className='xl:w-[22%] lg:w-[22%] md:w-[22%] w-full text-[#444746] font-roboto xl:sticky lg:sticky md:sticky h-fit p-2.5 top-0 my-[10px]'>
                         <div onClick={handleSidebar}>
                         <SVGIcon className='flex items-center justify-center  text-xl bg-transparent w-[35px] hover:bg-[#E9ECEF] h-[35px] rounded-[50%]' name={show ? "arrowleft" : "burgerMenu"} />
                         </div>
@@ -146,7 +146,7 @@ const Page = () => {
                         )}
                         
                     </div>
-                    <div className='w-[78%] h-[550px] border border-solid border-[#c7c7c7] p-5 bg-white my-[15px] ul-li'>
+                    <div className='xl:w-[78%] lg:w-[78%] md:w-[78%] w-full h-[550px] border border-solid border-[#c7c7c7] p-5 bg-white my-[15px] ul-li'>
                         <Tiptap />
                     </div>
                 </div>

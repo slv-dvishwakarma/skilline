@@ -114,40 +114,40 @@ const MenuBar = () => {
             disabled={!editor.can().chain().focus().toggleBold().run()}
             className={editor.isActive('bold') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="bold" />
+            <SVGIcon className="text-sm" name="bold" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleItalic().run()}
             disabled={!editor.can().chain().focus().toggleItalic().run()}
             className={editor.isActive('italic') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="ittalic" />
+            <SVGIcon className="text-xl" name="ittalic" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleStrike().run()}
             disabled={!editor.can().chain().focus().toggleStrike().run()}
             className={editor.isActive('strike') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Strikethrough" />
+            <SVGIcon className="text-[16px]" name="Strikethrough" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleCode().run()}
             disabled={!editor.can().chain().focus().toggleCode().run()}
             className={editor.isActive('code') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Monospace" />
+            <SVGIcon className="text-[16px]" name="Monospace" />
           </button>
 
           <button
             onClick={() => editor.chain().focus().setParagraph().run()}
             className={editor.isActive('paragraph') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="paragraph" />
+            <SVGIcon className="text-[16px]" name="paragraph" />
           </button>
 
           <div className="relative w-[100px] px-[5px] py-0 border-x-[#c7c7c7] border-l border-solid border-r">
             <button className="flex items-center gap-2.5" onClick={toggleDropdown}>
-              <p>{currentHeading}</p> <SVGIcon className="text-lg w-[10%]" name="ArrowDown" />
+              <p>{currentHeading}</p> <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
             </button>
             {dropdownOpen && (
               <div className="absolute z-10 w-full bg-white border border-gray-300 mt-1 rounded shadow">
@@ -165,7 +165,7 @@ const MenuBar = () => {
           </div>
           {/* <div className="relative w-[120px] px-[5px] py-0 border-x-[#c7c7c7] border-l border-solid border-r">
             <button className="flex items-center gap-2.5" onClick={toggleDropdownfamily}>
-              <p>{currentSize}</p> <SVGIcon className="text-lg w-[10%]" name="ArrowDown" />
+              <p>{currentSize}</p> <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
             </button>
             {fontDropdwon && (
               <div className="absolute z-10 w-full bg-white border border-gray-300 mt-1 rounded shadow">
@@ -185,62 +185,62 @@ const MenuBar = () => {
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             className={editor.isActive('bulletList') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Unordered" />
+            <SVGIcon className="text-[16px]" name="Unordered" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             className={editor.isActive('orderedList') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Ordered" />
+            <SVGIcon className="text-[16px]" name="Ordered" />
           </button>
           <button
             onClick={() => setTextAlign('left')}
             className={editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="left" />
+            <SVGIcon className="text-[16px]" name="left" />
           </button>
           <button
             onClick={() => setTextAlign('center')}
             className={editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Center" />
+            <SVGIcon className="text-[16px]" name="Center" />
           </button>
           <button
             onClick={() => setTextAlign('right')}
             className={editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Right" />
+            <SVGIcon className="text-[16px]" name="Right" />
           </button>
           <button
             onClick={() => setTextAlign('justify')}
             className={editor.isActive({ textAlign: 'justify' }) ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Justify" />
+            <SVGIcon className="text-[16px]" name="Justify" />
           </button>
           <button
             onClick={addLink}
             disabled={!editor.can().setMark('link')}
             className={editor.isActive('link') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="Link" />
+            <SVGIcon className="text-[16px]" name="Link" />
           </button>
           <button
             onClick={removeLink}
             disabled={!editor.isActive('link')}
             className={!editor.isActive('link') ? 'hidden' : ''}
           >
-            <SVGIcon className="text-lg" name="unlink" />
+            <SVGIcon className="text-[16px]" name="unlink" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             className={editor.isActive('codeBlock') ? 'is-active' : ''}
           >
 
-            <SVGIcon className="text-lg" name="code" />
+            <SVGIcon className="text-[16px]" name="code" />
           </button>
           <div className='flex relative'>
             <button onClick={() => setColorDropdownOpen(!colorDropdownOpen)}>
-              <SVGIcon className="text-lg" name="Color" />
+              <SVGIcon className="text-[16px]" name="Color" />
             </button>
             {colorDropdownOpen && (
               <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
@@ -255,10 +255,10 @@ const MenuBar = () => {
             )}
           </div>
 
-          <button onClick={() => editor.chain().focus().unsetColor().run()}><SVGIcon className="text-lg" name="unsetcolor" /></button>
+          <button onClick={() => editor.chain().focus().unsetColor().run()}><SVGIcon className="text-[16px]" name="unsetcolor" /></button>
           <div className='highlight flex relative'>
             <button onClick={() => setHighlight(!highlight)}>
-              <SVGIcon className="text-lg" name="Highlight" />
+              <SVGIcon className="text-[16px]" name="Highlight" />
             </button>
             {highlight && (
               <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
@@ -273,37 +273,37 @@ const MenuBar = () => {
             )}
           </div>
           <button onClick={addImage}>
-            <SVGIcon className="text-lg" name="image" />
+            <SVGIcon className="text-[16px]" name="image" />
           </button>
           <button onClick={addYouTube}>
-            <SVGIcon className="text-lg" name="YoutubeVideo" />
+            <SVGIcon className="text-[16px]" name="YoutubeVideo" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             className={editor.isActive('blockquote') ? 'is-active' : ''}
           >
-            <SVGIcon className="text-lg" name="blockquote" />
+            <SVGIcon className="text-[16px]" name="blockquote" />
           </button>
           <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-            <SVGIcon className="text-lg" name="horizontal" />
+            <SVGIcon className="text-[16px]" name="horizontal" />
           </button>
           <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-            <SVGIcon className="text-lg" name="break" />
+            <SVGIcon className="text-[16px]" name="break" />
           </button>
           <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-            <SVGIcon className="text-lg" name="erasser" />
+            <SVGIcon className="text-[16px]" name="erasser" />
           </button>
           <button
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().chain().focus().undo().run()}
           >
-            <SVGIcon className="text-lg" name="undo" />
+            <SVGIcon className="text-[16px]" name="undo" />
           </button>
           <button
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().chain().focus().redo().run()}
           >
-            <SVGIcon className="text-lg" name="redo" />
+            <SVGIcon className="text-[16px]" name="redo" />
           </button>
 
         </div>, element) : null}
