@@ -9,7 +9,7 @@ import { Note } from '@/components/Note';
 import { Code } from '@/components/Code';
 import { TOC } from '@/components/TOC';
 import { BlockNoteEditor } from '@/components/BlocknoteEditor';
-import { Tiptap } from '@/components/Tiptap';
+
 
 
 
@@ -65,7 +65,6 @@ export const RightBar: React.FC<RightBarProps> = ({ data }) => {
     note: Note,
     code: Code,
     toc: TOC,
-    editor: Tiptap,
   };
 
   return (

@@ -94,10 +94,5 @@
                 ]
             }
         ]
-    },
-    {
-        "type": "editor",
-        "props": {},
-        "content": []
     }
 ]

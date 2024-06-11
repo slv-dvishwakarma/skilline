@@ -142,7 +142,7 @@ const Page = () => {
                 </div>
                 <div className='w-[78%] border border-solid border-[#c7c7c7] p-5 bg-white mt-[15px]'>
                     <Tiptap />
-                    {/* <Tiptap /> */}
+                  
                     
                 </div>
             </div>
