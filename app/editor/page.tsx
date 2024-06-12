@@ -146,7 +146,7 @@ const Page = () => {
                         )}
                         
                     </div>
-                    <div className='xl:w-[78%] lg:w-[78%] md:w-[78%] w-full h-[550px] border border-solid border-[#c7c7c7] p-5 bg-white my-[15px] ul-li'>
+                    <div className='xl:w-[78%] lg:w-[78%] md:w-[78%] w-full border border-solid border-[#c7c7c7] p-5 bg-white my-[15px] ul-li'>
                         <Tiptap />
                     </div>
                 </div>

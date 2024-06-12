@@ -22,10 +22,6 @@ const MenuBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [image, setImage] = useState(false);
 
-  if (!editor) {
-    return null;
-  }
-
   const dropdownRef = useRef<HTMLDivElement>(null);
   const colorDropdownRef = useRef<HTMLDivElement>(null);
   const highlightDropdownRef = useRef<HTMLDivElement>(null);
@@ -51,23 +47,25 @@ const MenuBar = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [dropdownRef, colorDropdownRef, highlightDropdownRef, imageRef]);
+  }, [setColorDropdownOpen, setHighlightDropdownOpen, setDropdownOpen, setImage]);
 
   const addLink = () => {
     const url = prompt('Enter the URL');
-    if (url) {
+    if (url && editor) {
       editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
     }
   };
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
-      if (event.ctrlKey && event.key === 'k') {
-        event.preventDefault();
-        addLink();
-      } else if (event.altKey && event.shiftKey && event.key === '%') {
-        editor.chain().focus().toggleStrike().run();
-        event.preventDefault();
+      if (editor?.isActive) {
+        if (event.ctrlKey && event.key === 'k') {
+          event.preventDefault();
+          addLink();
+        } else if (event.altKey && event.shiftKey && event.key === '%') {
+          editor.chain().focus().toggleStrike().run();
+          event.preventDefault();
+        }
       }
     };
 
@@ -78,14 +76,15 @@ const MenuBar = () => {
     };
   }, [editor, addLink]);
 
+  if (!editor) {
+    return null;
+  }
 
   const handleHeadingChange = (level: any) => {
     editor.chain().focus().toggleHeading({ level }).run();
     setCurrentHeading(editor.isActive('heading', { level }) ? `h${level}` : 'Normal');
     setDropdownOpen(false);
   };
-
-  
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -95,8 +94,6 @@ const MenuBar = () => {
   const setTextAlign = (alignment: any) => {
     editor.chain().focus().setTextAlign(alignment).run();
   };
-
-
 
   const removeLink = () => {
     editor.chain().focus().unsetLink().run();
@@ -164,7 +161,6 @@ const MenuBar = () => {
   };
   const element = document?.getElementById("editor-toolbar");
   return (
-
     <>
       {element ? createPortal(
         <div className='w-full px-[4%] md:px-[3%] lg:px-[3%] xl:px-[5%] flex bg-[#edf2fa] flex-wrap py-[8px] px-[10px] rounded-sm justify-between relative'>
