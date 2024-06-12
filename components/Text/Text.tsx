@@ -28,7 +28,7 @@ export const Text: React.FC<InputProps> = ({ name, placeholder, label, icon, con
             <span className='input-border flex items-center border rounded-md border-solid border-[#BEBEBE] mt-[12px]'>
               <input
                 type="text"
-                className="form-control w-full border-none rounded-md focus:outline-none focus:shadow-none shadow-none h-[50px] placeholder:text-[#9D9D9D] text-[14px] px-3"
+                className="form-control w-full border-none rounded-md focus:outline-none focus:shadow-none shadow-none h-[35px] placeholder:text-[#9D9D9D] placeholder:text-[12px] text-[14px] px-3"
                 placeholder={placeholder}
                 autoComplete="off"
                 value={value}

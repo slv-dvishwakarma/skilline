@@ -13,6 +13,13 @@ import Highlight from '@tiptap/extension-highlight'
 import Focus from '@tiptap/extension-focus'
 import Youtube from '@tiptap/extension-youtube'
 import { Tooltip } from '../Tooltip'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
+import { Text } from '../Text'
+import { useForm } from 'react-hook-form'
+import { Number } from '../Number'
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -21,11 +28,15 @@ const MenuBar = () => {
   const [highlightDropdownOpen, setHighlightDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [image, setImage] = useState(false);
+  const [table, setTable] = useState(false);
+  const [video, setVideo] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const colorDropdownRef = useRef<HTMLDivElement>(null);
   const highlightDropdownRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -41,8 +52,14 @@ const MenuBar = () => {
       if (imageRef.current && !imageRef.current.contains(event.target as Node)) {
         setImage(false);
       }
+      if (tableRef.current && !tableRef.current.contains(event.target as Node)) {
+        setTable(false);
+      }
+      if (videoRef.current && !videoRef.current.contains(event.target as Node)) {
+        setVideo(false);
+      }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -75,6 +92,22 @@ const MenuBar = () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [editor, addLink]);
+
+  const { handleSubmit, control, formState: { errors }, reset } = useForm();
+
+  const onSubmit = (data: any) => {
+    if (editor) {
+      const youtubeData = {
+        src: data.url,
+        width: data.width ? parseInt(data.width, 10) : 640,
+        height: data.height ? parseInt(data.height, 10) : 480,
+      };
+      editor.commands.setYoutubeVideo(youtubeData);
+      reset();
+      setVideo(false);
+    }
+  };
+
 
   if (!editor) {
     return null;
@@ -145,20 +178,17 @@ const MenuBar = () => {
     }
   };
 
-
   const addYouTube = () => {
-    const url = prompt('Enter YouTube URL');
-    if (url) {
-      const width = prompt('Enter width (default is 640)');
-      const height = prompt('Enter height (default is 480)');
-      const youtubeData = {
-        src: url,
-        width: width ? parseInt(width, 10) : 640,
-        height: height ? parseInt(height, 10) : 480,
-      };
-      editor.commands.setYoutubeVideo(youtubeData);
-    }
+    setVideo(true);
   };
+
+  const insertsTable = () => {
+    setTable(true);
+  }
+
+
+
+
   const element = document?.getElementById("editor-toolbar");
   return (
     <>
@@ -191,13 +221,6 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Strikethrough" />
             </button>
           </Tooltip>
-          {/* <button
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            disabled={!editor.can().chain().focus().toggleCode().run()}
-            className={editor.isActive('code') ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
-          >
-            <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Monospace" />
-          </button> */}
           <Tooltip text='Paragraph (Ctrl+Alt+0)'>
             <button
               onClick={() => editor.chain().focus().setParagraph().run()}
@@ -207,7 +230,7 @@ const MenuBar = () => {
             </button>
           </Tooltip>
 
-          <div className="relative  px-[5px] py-0 border-x-[#c7c7c7] border-l border-solid border-r" ref={dropdownRef}>
+          <div className="relative  flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r" ref={dropdownRef}>
             <button className="flex items-center gap-2.5" onClick={toggleDropdown}>
               <p>{currentHeading}</p> <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
             </button>
@@ -225,6 +248,110 @@ const MenuBar = () => {
               </div>
             )}
           </div>
+
+          <div className='table'>
+            <div className='flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r'>
+              <Tooltip text='Insert Table'><button onClick={insertsTable}>Insert</button></Tooltip>
+              <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
+            </div>
+            <div className='relative' ref={tableRef}>
+              {table ? (
+                <div className="control-group z-[1] border rounded shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)] h-[300px] overflow-y-auto absolute w-[250px] bg-[white] p-5 border-solid border-transparent top-2.5">
+                  <ul className="button-group divide-y-2">
+                    <li className="leading-8"><button
+                      onClick={() => {
+                        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+                        setTable(false);
+                      }}
+                    >
+                      Insert table
+                    </button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().addColumnBefore().run();
+                      setTable(false);
+                    }}>
+                      Add column before
+                    </button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().addColumnAfter().run();
+                      setTable(false);
+                    }}>Add column after</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().deleteColumn().run();
+                      setTable(false);
+                    }}>Delete column</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().addRowBefore().run();
+                      setTable(false);
+                    }}>Add row before</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().addRowAfter().run();
+                      setTable(false);
+                    }}>Add row after</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().deleteRow().run();
+                      setTable(false);
+                    }}>Delete row</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().deleteTable().run();
+                      setTable(false);
+                    }}>Delete table</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().mergeCells().run();
+                      setTable(false);
+                    }}>Merge cells</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().splitCell().run();
+                      setTable(false);
+                    }}>Split cell</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().toggleHeaderColumn().run();
+                      setTable(false);
+                    }}>
+                      Toggle header column
+                    </button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().toggleHeaderRow().run();
+                      setTable(false);
+                    }}>
+                      Toggle header row
+                    </button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().toggleHeaderCell().run();
+                      setTable(false);
+                    }}>
+                      Toggle header cell
+                    </button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().mergeOrSplit().run();
+                      setTable(false);
+                    }}>Merge or split</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().setCellAttribute('colspan', 2).run();
+                      setTable(false);
+                    }}>
+                      Set cell attribute
+                    </button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().fixTables().run();
+                      setTable(false);
+                    }}>Fix tables</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().goToNextCell().run();
+                      setTable(false);
+                    }}>Go to next cell</button></li>
+                    <li className="leading-8"><button onClick={() => {
+                      editor.chain().focus().goToPreviousCell().run();
+                      setTable(false);
+                    }}>
+                      Go to previous cell
+                    </button></li>
+                  </ul>
+                </div>
+              ) : (null)}
+            </div>
+          </div>
+
           <Tooltip text='BulletList (Ctrl+Shift+8)'>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -361,11 +488,28 @@ const MenuBar = () => {
               ) : (null)}
             </div>
           </div>
-          <Tooltip text='Video'>
-            <button onClick={addYouTube}>
-              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="YoutubeVideo" />
-            </button>
-          </Tooltip>
+
+          <div>
+            <Tooltip text='Video'>
+              <button onClick={addYouTube}>
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="YoutubeVideo" />
+              </button>
+            </Tooltip>
+            <div ref={videoRef}>
+              {video ? (
+                <div className='flex absolute flex-wrap w-[200px] border rounded shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)] max-h-[calc(100vh_-_94px)] overflow-y-auto bg-[white] z-[999999] p-3.5 border-solid border-transparent'>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Text name="url" placeholder="Enter Image Url" control={control} errors={errors} />
+                    <Number name="width" placeholder="Enter Image Width" required={false} control={control} errors={errors} />
+                    <Number name="height" placeholder="Enter Image Height" required={false} control={control} errors={errors} />
+                    <div className='pt-4'>
+                      <button type='submit' className='w-full text-center bg-secondary rounded-xl py-1 px-6 font-semibold text-lg text-white transition-all duration-500'>Add</button>
+                    </div>
+                  </form>
+                </div>
+              ) : (null)}
+            </div>
+          </div>
           <Tooltip text='Blockquote'>
             <button
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -452,6 +596,12 @@ const extensions = [
     controls: false,
     nocookie: true,
   }),
+  Table.configure({
+    resizable: true,
+  }),
+  TableRow,
+  TableHeader,
+  TableCell,
   Image,
   Color,
   TextStyle,
