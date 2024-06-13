@@ -23,7 +23,7 @@ import { Number } from '../Number'
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
-  const [currentHeading, setCurrentHeading] = useState('Font');
+  // const [currentHeading, setCurrentHeading] = useState('Fonts');
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
   const [highlightDropdownOpen, setHighlightDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -108,21 +108,19 @@ const MenuBar = () => {
     }
   };
 
-
   if (!editor) {
     return null;
   }
 
   const handleHeadingChange = (level: any) => {
     editor.chain().focus().toggleHeading({ level }).run();
-    setCurrentHeading(editor.isActive('heading', { level }) ? `h${level}` : 'Normal');
+    // setCurrentHeading(editor.isActive('heading', { level }) ? `h${level}` : 'Normal');
     setDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
-
 
   const setTextAlign = (alignment: any) => {
     editor.chain().focus().setTextAlign(alignment).run();
@@ -186,8 +184,15 @@ const MenuBar = () => {
     setTable(true);
   }
 
-
-
+  const colors = [
+    '#958DF1',
+    '#F98181',
+    '#FBBC88',
+    '#FAF594',
+    '#70CFF8',
+    '#94FADB',
+    '#B9F18D'
+  ];
 
   const element = document?.getElementById("editor-toolbar");
   return (
@@ -229,34 +234,47 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="paragraph" />
             </button>
           </Tooltip>
-
-          <div className="relative  flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r" ref={dropdownRef}>
-            <button className="flex items-center gap-2.5" onClick={toggleDropdown}>
-              <p>{currentHeading}</p> <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
-            </button>
-            {dropdownOpen && (
-              <div className="absolute z-10 w-full bg-white border border-gray-300 mt-1 rounded shadow">
-                {[1, 2, 3, 4, 5, 6].map(level => (
-                  <p
-                    key={level}
-                    onClick={() => handleHeadingChange(level)}
-                    className={`cursor-pointer px-2 py-1  ${editor.isActive('heading', { level }) ? 'bg-gray-200' : ''}`}
-                  >
-                    H{level}
-                  </p>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className='table'>
-            <div className='flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r'>
-              <Tooltip text='Insert Table'><button onClick={insertsTable}>Insert</button></Tooltip>
-              <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
+          <div className='relative'>
+            <Tooltip text='Select Heading'><div className="w-[83px] flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r" ref={dropdownRef}>
+              <button className="flex items-center gap-2.5" onClick={toggleDropdown}>
+                <p>Fonts</p> <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
+              </button>
+            </div></Tooltip>
+            <div className='relative' ref={dropdownRef}>
+              {dropdownOpen && (
+                <div className="w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[14px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
+                  <div className='divide-y-2'>
+                    {[1, 2, 3, 4, 5, 6].map(level => (
+                      <p
+                        key={level}
+                        onClick={() => handleHeadingChange(level)}
+                        className={`cursor-pointer px-2 py-1 relative z-[999] ${editor.isActive('heading', { level }) ? 'bg-gray-200' : ''}`}
+                      >
+                        Heading {level}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
+          </div>
+          <div className='table'>
+            {table ? (
+              <div className='flex items-center gap-2.5 cursor-pointer' onClick={insertsTable}>
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Table" />
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="ArrowDown" />
+              </div>
+            ) : (
+              <Tooltip text='Insert Table'><div className='flex items-center gap-2.5 cursor-pointer' onClick={insertsTable}>
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Table" />
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="ArrowDown" />
+              </div></Tooltip>
+            )}
             <div className='relative' ref={tableRef}>
               {table ? (
-                <div className="control-group z-[1] border rounded shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)] h-[300px] overflow-y-auto absolute w-[250px] bg-[white] p-5 border-solid border-transparent top-2.5">
+                <div className="w-[250px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999] h-[300px] overflow-scroll">
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
                   <ul className="button-group divide-y-2">
                     <li className="leading-8"><button
                       onClick={() => {
@@ -351,7 +369,6 @@ const MenuBar = () => {
               ) : (null)}
             </div>
           </div>
-
           <Tooltip text='BulletList (Ctrl+Shift+8)'>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -400,6 +417,14 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Justify" />
             </button>
           </Tooltip>
+          <Tooltip text='Code'>
+            <button
+              onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+              className={editor.isActive('codeBlock') ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
+            >
+              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="code" />
+            </button>
+          </Tooltip>
           <Tooltip text='Insert Link (Ctrl+K)'>
             <button
               onClick={addLink}
@@ -413,71 +438,91 @@ const MenuBar = () => {
             <button
               onClick={removeLink}
               disabled={!editor.isActive('link')}
-              className={!editor.isActive('link') ? 'text-[#5f6368]' : ''}
+              className={!editor.isActive('link') ? 'text-[#5f6368] opacity-60' : 'text-black'}
             >
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="unlink" />
             </button>
           </Tooltip>
-          <Tooltip text='Code'>
-            <button
-              onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              className={editor.isActive('codeBlock') ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
-            >
-              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="code" />
-            </button>
-          </Tooltip>
-          <Tooltip text='Text Color'>
-            <div className='flex relative' ref={colorDropdownRef}>
+          <div className='flex relative' ref={colorDropdownRef}>
+            {colorDropdownOpen ? (
               <button onClick={() => setColorDropdownOpen(!colorDropdownOpen)}>
                 <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Color" />
               </button>
-              {colorDropdownOpen && (
-                <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
-                  <button onClick={() => setColor('#958DF1')} style={{ backgroundColor: '#958DF1' }} className='bg-[#958DF1] w-[20px] h-[20px]' />
-                  <button onClick={() => setColor('#F98181')} style={{ backgroundColor: '#F98181' }} className='bg-[#958DF1] w-[20px] h-[20px]' />
-                  <button onClick={() => setColor('#FBBC88')} style={{ backgroundColor: '#FBBC88' }} className='bg-[#FBBC88] w-[20px] h-[20px]' />
-                  <button onClick={() => setColor('#FAF594')} style={{ backgroundColor: '#FAF594' }} className='bg-[#FAF594] w-[20px] h-[20px]' />
-                  <button onClick={() => setColor('#70CFF8')} style={{ backgroundColor: '#70CFF8' }} className='bg-[#70CFF8] w-[20px] h-[20px]' />
-                  <button onClick={() => setColor('#94FADB')} style={{ backgroundColor: '#94FADB' }} className='bg-[#94FADB] w-[20px] h-[20px]' />
-                  <button onClick={() => setColor('#B9F18D')} style={{ backgroundColor: '#B9F18D' }} className='bg-[#B9F18D] w-[20px] h-[20px]' />
-                </div>
-              )}
-            </div>
-          </Tooltip>
+            ) : (
+              <Tooltip text='Text Color'><button onClick={() => setColorDropdownOpen(!colorDropdownOpen)}>
+                <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Color" />
+              </button></Tooltip>
+            )}
+            {colorDropdownOpen && (
+              <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
+                {colors.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => setColor(color)}
+                    style={{ backgroundColor: color }}
+                    className={`w-[20px] h-[20px] ${editor.isActive('textStyle', { color }) ? 'active' : ''}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
           <Tooltip text='Remove Color'>
-            <button onClick={() => editor.chain().focus().unsetColor().run()}><SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="unsetcolor" /></button></Tooltip>
-          <Tooltip text='Highlight Color'>
-            <div className='highlight flex relative' ref={highlightDropdownRef}>
+            <button
+              onClick={() => editor.chain().focus().unsetColor().run()}
+              className={editor.isActive('textStyle', { color: editor.getAttributes('textStyle').color }) ? 'text-black' : 'text-[#5f6368] opacity-60'}
+              disabled={!editor.isActive('textStyle', { color: editor.getAttributes('textStyle').color })}
+            >
+              <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="unsetcolor" />
+            </button>
+          </Tooltip>
+          <div className='highlight flex relative' ref={highlightDropdownRef}>
+            {highlightDropdownOpen ? (
               <button onClick={() => setHighlightDropdownOpen(!highlightDropdownOpen)}>
                 <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Highlight" />
               </button>
-              {highlightDropdownOpen && (
-                <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
-                  <button onClick={() => toggleHighlight('#958DF1')} style={{ backgroundColor: '#958DF1' }} className='bg-[#958DF1] w-[20px] h-[20px]' />
-                  <button onClick={() => toggleHighlight('#F98181')} style={{ backgroundColor: '#F98181' }} className='bg-[#958DF1] w-[20px] h-[20px]' />
-                  <button onClick={() => toggleHighlight('#FBBC88')} style={{ backgroundColor: '#FBBC88' }} className='bg-[#FBBC88] w-[20px] h-[20px]' />
-                  <button onClick={() => toggleHighlight('#FAF594')} style={{ backgroundColor: '#FAF594' }} className='bg-[#FAF594] w-[20px] h-[20px]' />
-                  <button onClick={() => toggleHighlight('#70CFF8')} style={{ backgroundColor: '#70CFF8' }} className='bg-[#70CFF8] w-[20px] h-[20px]' />
-                  <button onClick={() => toggleHighlight('#94FADB')} style={{ backgroundColor: '#94FADB' }} className='bg-[#94FADB] w-[20px] h-[20px]' />
-                  <button onClick={() => toggleHighlight('#B9F18D')} style={{ backgroundColor: '#B9F18D' }} className='bg-[#B9F18D] w-[20px] h-[20px]' />
-                </div>
-              )}
-            </div>
-          </Tooltip>
+            ) : (
+              <Tooltip text='Highlight Color'><button onClick={() => setHighlightDropdownOpen(!highlightDropdownOpen)}>
+                <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Highlight" />
+              </button></Tooltip>
+            )}
+            {highlightDropdownOpen && (
+              <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
+                {colors.map((color) => (
+                  <button
+                    key={color}
+                    onClick={() => toggleHighlight(color)}
+                    style={{ backgroundColor: color }}
+                    className={`w-[20px] h-[20px] bg-[${color}] ${editor.isActive('highlight', { color }) ? 'active' : ''}`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
           <Tooltip text='Remove Highlight'>
-            <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
+            <button
+              onClick={() => editor.chain().focus().unsetAllMarks().run()}
+              className={editor.isActive('highlight') ? 'text-black' : 'text-[#5f6368] opacity-60'}
+              disabled={!editor.isActive('highlight')}
+            >
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="erasser" />
             </button>
           </Tooltip>
           <div>
-            <Tooltip text='Image'>
+            {image ? (
               <button onClick={addImage}>
                 <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="image" />
               </button>
-            </Tooltip>
-            <div ref={imageRef}>
+            ) : (
+              <Tooltip text='Image'>
+                <button onClick={addImage}>
+                  <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="image" />
+                </button>
+              </Tooltip>
+            )}
+            <div ref={imageRef} className='relative'>
               {image ? (
-                <div className='flex absolute flex-wrap w-[200px] border rounded shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)] max-h-[calc(100vh_-_94px)] overflow-y-auto bg-[white] z-[999999] p-3.5 border-solid border-transparent'>
+                <div className='w-[205px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]'>
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
                   <button onClick={addImageUrl} className='flex items-center gap-[15px] text-[15px] py-[7px]'><SVGIcon className="text-[15px]" name="upload" />Upload Image Url</button>
                   <label className='flex items-center gap-[15px] text-[15px] py-[7px] cursor-pointer'>
                     <SVGIcon className="text-[15px]" name="Link" />
@@ -488,16 +533,22 @@ const MenuBar = () => {
               ) : (null)}
             </div>
           </div>
-
           <div>
-            <Tooltip text='Video'>
+            {video ? (
               <button onClick={addYouTube}>
                 <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="YoutubeVideo" />
               </button>
-            </Tooltip>
-            <div ref={videoRef}>
+            ) : (
+              <Tooltip text='Video'>
+                <button onClick={addYouTube}>
+                  <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="YoutubeVideo" />
+                </button>
+              </Tooltip>
+            )}
+            <div ref={videoRef} className='relative'>
               {video ? (
-                <div className='flex absolute flex-wrap w-[200px] border rounded shadow-[0_2px_6px_2px_rgba(60,64,67,0.15)] max-h-[calc(100vh_-_94px)] overflow-y-auto bg-[white] z-[999999] p-3.5 border-solid border-transparent'>
+                <div className='w-[205px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]'>
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Text name="url" placeholder="Enter Image Url" control={control} errors={errors} />
                     <Number name="width" placeholder="Enter Image Width" required={false} control={control} errors={errors} />
@@ -528,11 +579,11 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="break" />
             </button>
           </Tooltip>
-
           <Tooltip text='Undo'>
             <button
               onClick={() => editor.chain().focus().undo().run()}
               disabled={!editor.can().chain().focus().undo().run()}
+              className={!editor.can().chain().focus().undo().run() ? 'text-[#5f6368] opacity-60' : ''}
             >
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="undo" />
             </button>
@@ -541,20 +592,18 @@ const MenuBar = () => {
             <button
               onClick={() => editor.chain().focus().redo().run()}
               disabled={!editor.can().chain().focus().redo().run()}
+              className={!editor.can().chain().focus().redo().run() ? 'text-[#5f6368] opacity-60' : ''}
             >
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="redo" />
             </button>
           </Tooltip>
         </div>, element) : null}
-
     </>
   )
 }
 
-
 const extensions = [
   StarterKit.configure({
-
     heading: {
       HTMLAttributes: {
         class: (level: any) => `heading-${level}`,
@@ -575,7 +624,6 @@ const extensions = [
         class: 'custom-li',
       },
     },
-
   }),
 
   TextAlign.configure({
