@@ -22,6 +22,9 @@ import { useForm } from 'react-hook-form'
 import { Number } from '../Number'
 import { FileInput } from '../FileInput'
 import ResizeImage from 'tiptap-extension-resize-image';
+import FontFamily from '@tiptap/extension-font-family'
+import Underline from '@tiptap/extension-underline'
+import Placeholder from '@tiptap/extension-placeholder'
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -33,6 +36,7 @@ const MenuBar = () => {
   const [image, setImage] = useState(false);
   const [table, setTable] = useState(false);
   const [video, setVideo] = useState(false);
+  const [family, setFamily] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const colorDropdownRef = useRef<HTMLDivElement>(null);
@@ -40,6 +44,7 @@ const MenuBar = () => {
   const imageRef = useRef<HTMLDivElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
+  const familyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,6 +65,9 @@ const MenuBar = () => {
       }
       if (videoRef.current && !videoRef.current.contains(event.target as Node)) {
         setVideo(false);
+      }
+      if (familyRef.current && !familyRef.current.contains(event.target as Node)) {
+        setFamily(false);
       }
     };
 
@@ -217,6 +225,20 @@ const MenuBar = () => {
     setActiveTab(index);
   };
 
+  const insertsFonts = () => {
+    setFamily(true)
+  }
+
+  const fonts = [
+    "inter",
+    "comic-sans",
+    "serif",
+    "monospace",
+    "cursive",
+    "comic-sans-quoted",
+    "unsetFontFamily",
+  ]
+
 
   const element = document?.getElementById("editor-toolbar");
   return (
@@ -258,12 +280,18 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="paragraph" />
             </button>
           </Tooltip>
+          <Tooltip text='Underline'><button
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={editor.isActive('underline') ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : ''}
+          >
+            <SVGIcon name="underline" className="text-[16px] flex justify-center items-center w-6 h-6" />
+          </button></Tooltip>
           <div className='relative'>
-            <Tooltip text='Select Heading'><div className="w-[83px] flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r" ref={dropdownRef}>
+            <div className="w-[83px] flex items-center px-2 gap-2.5 border-x-[#c7c7c7] border-l border-solid border-r" ref={dropdownRef}>
               <button className="flex items-center gap-2.5" onClick={toggleDropdown}>
                 <p>Fonts</p> <SVGIcon className="text-[16px] w-[10%]" name="ArrowDown" />
               </button>
-            </div></Tooltip>
+            </div>
             <div className='relative' ref={dropdownRef}>
               {dropdownOpen && (
                 <div className="w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[14px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
@@ -393,6 +421,43 @@ const MenuBar = () => {
               ) : (null)}
             </div>
           </div>
+          <div className='font family'>
+            {family ? (
+              <div className='flex items-center gap-2.5 cursor-pointer' onClick={insertsFonts}>
+                <p>Font Family</p>
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="ArrowDown" />
+              </div>
+            ) : (
+              <Tooltip text='Insert Fonts'><div className='flex items-center gap-2.5 cursor-pointer' onClick={insertsFonts}>
+                <p>Font Family</p>
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="ArrowDown" />
+              </div></Tooltip>
+            )}
+            <div className='relative' ref={familyRef}>
+              {family ? (
+                <div className="w-[200px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999] h-[250px] overflow-scroll">
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
+                  <ul className="button-group divide-y-2">
+                  {fonts.map((font, index) => (
+                    <li key={index} className="leading-8">
+                    <button
+                      onClick={() => {
+                        editor.chain().focus().setFontFamily(font).run();
+                        setFamily(false); 
+                      }}
+                      className={`w-full ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
+                      data-test-id="inter"
+                    >
+                      {font}
+                    </button>
+                  </li>
+                  ))}
+                  </ul>
+                </div>
+              ) : (null)}
+            </div>
+          </div>
+          
           <Tooltip text='BulletList (Ctrl+Shift+8)'>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -467,7 +532,7 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="unlink" />
             </button>
           </Tooltip>
-          <div className='flex relative' ref={colorDropdownRef}>
+          <div className='relative' >
             {colorDropdownOpen ? (
               <button onClick={() => setColorDropdownOpen(!colorDropdownOpen)}>
                 <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Color" />
@@ -477,8 +542,11 @@ const MenuBar = () => {
                 <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Color" />
               </button></Tooltip>
             )}
+            <div className='relative' ref={colorDropdownRef}>
             {colorDropdownOpen && (
-              <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
+              <div className="tabs w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
+                <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
+                <div className='flex items-center flex-wrap gap-3'>
                 {colors.map((color) => (
                   <button
                     key={color}
@@ -487,8 +555,10 @@ const MenuBar = () => {
                     className={`w-[20px] h-[20px] ${editor.isActive('textStyle', { color }) ? 'active' : ''}`}
                   />
                 ))}
+                </div>
               </div>
             )}
+            </div>
           </div>
           <Tooltip text='Remove Color'>
             <button
@@ -499,7 +569,7 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="unsetcolor" />
             </button>
           </Tooltip>
-          <div className='highlight flex relative' ref={highlightDropdownRef}>
+          <div className='highlight relative' >
             {highlightDropdownOpen ? (
               <button onClick={() => setHighlightDropdownOpen(!highlightDropdownOpen)}>
                 <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Highlight" />
@@ -509,8 +579,11 @@ const MenuBar = () => {
                 <SVGIcon className="text-[16px] flex items-center justify-center w-6 h-6" name="Highlight" />
               </button></Tooltip>
             )}
+            <div className='relative' ref={highlightDropdownRef}>
             {highlightDropdownOpen && (
-              <div className="absolute flex gap-3 flex-wrap w-[150px] border z-[100] bg-white shadow-[3px_3px_5px_#bfbdbd] p-[15px] rounded-sm border-solid border-[#f1f1f1] left-0 top-[35px]">
+              <div className="tabs w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
+                <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
+                <div className='flex items-center flex-wrap gap-3'>
                 {colors.map((color) => (
                   <button
                     key={color}
@@ -519,8 +592,10 @@ const MenuBar = () => {
                     className={`w-[20px] h-[20px] bg-[${color}] ${editor.isActive('highlight', { color }) ? 'active' : ''}`}
                   />
                 ))}
+                </div>
               </div>
             )}
+            </div>
           </div>
           <Tooltip text='Remove Highlight'>
             <button
@@ -640,6 +715,8 @@ const MenuBar = () => {
   )
 }
 
+const limit = 800
+
 
 const extensions = [
   StarterKit.configure({
@@ -686,18 +763,23 @@ const extensions = [
   Table.configure({
     resizable: true,
   }),
+  Placeholder.configure({
+    placeholder: 'Write something …',
+  }),
   TableRow,
   TableHeader,
   TableCell,
   Color,
   TextStyle,
   ResizeImage,
+  FontFamily,
   Image,
+  Underline,
 ]
 
 export const Tiptap = () => {
   return (
-    <div className='my-5'>
+    <div className='my-5 placeholderdesign'>
       <EditorProvider slotBefore={<MenuBar />} extensions={extensions}></EditorProvider>
     </div>
   )
