@@ -20,10 +20,13 @@ import TableRow from '@tiptap/extension-table-row'
 import { Text } from '../Text'
 import { useForm } from 'react-hook-form'
 import { Number } from '../Number'
+import { FileInput } from '../FileInput'
+import ResizeImage from 'tiptap-extension-resize-image';
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
   // const [currentHeading, setCurrentHeading] = useState('Fonts');
+  const [activeTab, setActiveTab] = useState(0);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
   const [highlightDropdownOpen, setHighlightDropdownOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -95,18 +98,52 @@ const MenuBar = () => {
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm();
 
-  const onSubmit = (data: any) => {
-    if (editor) {
-      const youtubeData = {
-        src: data.url,
-        width: data.width ? parseInt(data.width, 10) : 640,
-        height: data.height ? parseInt(data.height, 10) : 480,
-      };
-      editor.commands.setYoutubeVideo(youtubeData);
-      reset();
-      setVideo(false);
+  const onSubmit = async (data: any) => {
+    try {
+      if (editor) {
+        if (data.url) {
+          const youtubeData = {
+            src: data.url,
+            width: data.width ? parseInt(data.width, 10) : 640,
+            height: data.height ? parseInt(data.height, 10) : 480,
+          };
+          editor.commands.setYoutubeVideo(youtubeData);
+          reset();
+          setVideo(false);
+        } else if (data.imageurl) {
+          const imageData = {
+            src: data.imageurl,
+          };
+          editor.commands.setImage(imageData);
+          reset();
+          setImage(false);
+        } else if (data.imageuploadurl) {
+          const file = data.imageuploadurl;
+          console.log(file)
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              if (reader.result) {
+                const uploadedImageData = {
+                  src: reader.result as string,
+                };
+                editor.chain().focus().setImage(uploadedImageData).run();
+                reset();
+                setImage(false);
+              }
+            };
+            reader.onerror = (error) => {
+              console.error('Error reading file:', error);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error in onSubmit:', error);
     }
   };
+
 
   if (!editor) {
     return null;
@@ -130,33 +167,10 @@ const MenuBar = () => {
     editor.chain().focus().unsetLink().run();
   };
 
-  const addImage = () => {
+  const imageToggle = () => {
     setImage(true)
   };
 
-  const addImageUrl = () => {
-    const url = prompt('Enter the image URL');
-    setImage(false);
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-
-    }
-  };
-
-  const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setImage(false);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          editor.chain().focus().setImage({ src: reader.result as string }).run();
-
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const setColor = (color: any) => {
     try {
@@ -193,6 +207,16 @@ const MenuBar = () => {
     '#94FADB',
     '#B9F18D'
   ];
+
+  const tabs = [
+    "Insert Image Url",
+    "Upload From PC"
+  ]
+
+  const handleTabChange = (index: number) => {
+    setActiveTab(index);
+  };
+
 
   const element = document?.getElementById("editor-toolbar");
   return (
@@ -509,26 +533,40 @@ const MenuBar = () => {
           </Tooltip>
           <div>
             {image ? (
-              <button onClick={addImage}>
+              <button onClick={imageToggle}>
                 <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="image" />
               </button>
             ) : (
               <Tooltip text='Image'>
-                <button onClick={addImage}>
+                <button onClick={imageToggle}>
                   <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="image" />
                 </button>
               </Tooltip>
             )}
             <div ref={imageRef} className='relative'>
               {image ? (
-                <div className='w-[205px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]'>
+                <div className="tabs w-[300px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
                   <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
-                  <button onClick={addImageUrl} className='flex items-center gap-[15px] text-[15px] py-[7px]'><SVGIcon className="text-[15px]" name="upload" />Upload Image Url</button>
-                  <label className='flex items-center gap-[15px] text-[15px] py-[7px] cursor-pointer'>
-                    <SVGIcon className="text-[15px]" name="Link" />
-                    <span>Upload Image File</span>
-                    <input type='file' accept='image/*' onChange={uploadImage} className='hidden' />
-                  </label>
+                  <div className="tab-buttons flex justify-between border border-solid border-[#EDF2FA]">
+                    {tabs.map((item, index) => (
+                      <button
+                        key={index}
+                        className={`px-5 py-2.5 w-full ${activeTab === index ? 'bg-[#EDF2FA] text-black' : ''}`}
+                        onClick={() => handleTabChange(index)}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="tab-content">
+                      {activeTab === 0 && <div><Text name="imageurl" placeholder="Enter Image Url" control={control} errors={errors} /></div>}
+                      {activeTab === 1 && <div><FileInput name='imageuploadurl' placeholder='Upload Image' control={control} errors={errors} /></div>}
+                    </div>
+                    <div className='pt-4'>
+                      <button type='submit' className='w-full text-center bg-secondary rounded-xl py-1 px-6 font-semibold text-lg text-white transition-all duration-500'>Add</button>
+                    </div>
+                  </form>
                 </div>
               ) : (null)}
             </div>
@@ -550,9 +588,9 @@ const MenuBar = () => {
                 <div className='w-[205px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]'>
                   <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <Text name="url" placeholder="Enter Image Url" control={control} errors={errors} />
-                    <Number name="width" placeholder="Enter Image Width" required={false} control={control} errors={errors} />
-                    <Number name="height" placeholder="Enter Image Height" required={false} control={control} errors={errors} />
+                    <Text name="url" placeholder="Enter Video Url" control={control} errors={errors} />
+                    <Number name="width" placeholder="Enter Video Width" required={false} control={control} errors={errors} />
+                    <Number name="height" placeholder="Enter Video Height" required={false} control={control} errors={errors} />
                     <div className='pt-4'>
                       <button type='submit' className='w-full text-center bg-secondary rounded-xl py-1 px-6 font-semibold text-lg text-white transition-all duration-500'>Add</button>
                     </div>
@@ -602,8 +640,10 @@ const MenuBar = () => {
   )
 }
 
+
 const extensions = [
   StarterKit.configure({
+
     heading: {
       HTMLAttributes: {
         class: (level: any) => `heading-${level}`,
@@ -625,9 +665,8 @@ const extensions = [
       },
     },
   }),
-
   TextAlign.configure({
-    types: ['heading', 'paragraph'],
+    types: ['heading', 'paragraph', 'image'],
   }),
   Link.configure({
     HTMLAttributes: {
@@ -650,10 +689,10 @@ const extensions = [
   TableRow,
   TableHeader,
   TableCell,
-  Image,
   Color,
   TextStyle,
-
+  ResizeImage,
+  Image,
 ]
 
 export const Tiptap = () => {
