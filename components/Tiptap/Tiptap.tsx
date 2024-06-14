@@ -172,8 +172,8 @@ const MenuBar = () => {
       console.log("JSON data is empty. Aborting save.");
       return; // Exit the function if data is empty
     } 
-    const url = "https://skilline-educations.netlify.app/api/save-data"
-    // const url = "http://localhost:3000/api/save-data";
+    // const url = "https://skilline-educations.netlify.app/api/save-data"
+    const url = "http://localhost:3000/api/save-data";
     const response = await fetch(url, {
       method: "POST",
       body: stringify(jsons),
@@ -192,8 +192,8 @@ const MenuBar = () => {
 
   const fetchSavedData = async () => {
     try {
-       // const url = "http://localhost:3000/api/save-data";
-       const url = "https://skilline-educations.netlify.app/api/save-data"
+       const url = "http://localhost:3000/api/save-data";
+      //  const url = "https://skilline-educations.netlify.app/api/save-data"
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();

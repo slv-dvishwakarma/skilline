@@ -32,8 +32,8 @@ const Page = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const url = "https://skilline-educations.netlify.app/api/save-data"
-                 // const url = "http://localhost:3000/api/save-data";
+                // const url = "https://skilline-educations.netlify.app/api/save-data"
+                 const url = "http://localhost:3000/api/save-data";
 
                 const res = await fetch(url);
                 const data: ApiResponse = await res.json();
