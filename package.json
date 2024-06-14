@@ -36,6 +36,7 @@
     "@tiptap/extension-youtube": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
     "@types/draft-js": "^0.11.18",
+    "axios": "^1.7.2",
     "classnames": "^2.5.1",
     "contenido": "^1.2.13",
     "draft-convert": "^2.1.13",

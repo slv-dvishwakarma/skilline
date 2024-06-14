@@ -1,6 +1,6 @@
 "use client"
 import TextAlign from '@tiptap/extension-text-align'
-import { EditorProvider, useCurrentEditor } from '@tiptap/react'
+import { EditorProvider, useCurrentEditor, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import React, { useEffect, useRef, useState } from 'react'
 import { SVGIcon } from '../Icons'
@@ -25,6 +25,9 @@ import ResizeImage from 'tiptap-extension-resize-image';
 import FontFamily from '@tiptap/extension-font-family'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
+import { stringify } from 'flatted';
+import { mergeAttributes } from '@tiptap/core';
+import Heading from '@tiptap/extension-heading';
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -77,12 +80,14 @@ const MenuBar = () => {
     };
   }, [setColorDropdownOpen, setHighlightDropdownOpen, setDropdownOpen, setImage]);
 
+
   const addLink = () => {
     const url = prompt('Enter the URL');
     if (url && editor) {
       editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
     }
   };
+
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -152,10 +157,62 @@ const MenuBar = () => {
     }
   };
 
+  useEffect(() => {
+    fetchSavedData();
+  }, [editor]);
 
   if (!editor) {
     return null;
   }
+  const handleSave = async () => {
+    const json = editor.getJSON();
+    const jsons = JSON.stringify(json, null, 2)
+
+    if (!json || Object.keys(json).length === 0) {
+      console.log("JSON data is empty. Aborting save.");
+      return; // Exit the function if data is empty
+    } 
+    const url = "https://skilline-educations.netlify.app/api/save-data"
+    // const url = "http://localhost:3000/api/save-data";
+    const response = await fetch(url, {
+      method: "POST",
+      body: stringify(jsons),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.status === 200) {
+      console.log("success")
+      window.location.reload();
+    } else {
+      console.log("failed");
+    }
+  };
+
+  const fetchSavedData = async () => {
+    try {
+       // const url = "http://localhost:3000/api/save-data";
+       const url = "https://skilline-educations.netlify.app/api/save-data"
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        // Update editor with fetched data
+        if (editor && data) {
+          editor.commands.setContent(data); // Assuming setContent or a similar method exists
+        }
+      } else {
+        console.error('Failed to fetch saved data');
+      }
+    } catch (error) {
+      console.error('Error fetching saved data:', error);
+    }
+  };
+
+
+
+
+  
 
   const handleHeadingChange = (level: any) => {
     editor.chain().focus().toggleHeading({ level }).run();
@@ -328,94 +385,24 @@ const MenuBar = () => {
                 <div className="w-[250px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999] h-[300px] overflow-scroll">
                   <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
                   <ul className="button-group divide-y-2">
-                    <li className="leading-8"><button
-                      onClick={() => {
-                        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
-                        setTable(false);
-                      }}
-                    >
-                      Insert table
-                    </button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().addColumnBefore().run();
-                      setTable(false);
-                    }}>
-                      Add column before
-                    </button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().addColumnAfter().run();
-                      setTable(false);
-                    }}>Add column after</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().deleteColumn().run();
-                      setTable(false);
-                    }}>Delete column</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().addRowBefore().run();
-                      setTable(false);
-                    }}>Add row before</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().addRowAfter().run();
-                      setTable(false);
-                    }}>Add row after</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().deleteRow().run();
-                      setTable(false);
-                    }}>Delete row</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().deleteTable().run();
-                      setTable(false);
-                    }}>Delete table</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().mergeCells().run();
-                      setTable(false);
-                    }}>Merge cells</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().splitCell().run();
-                      setTable(false);
-                    }}>Split cell</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().toggleHeaderColumn().run();
-                      setTable(false);
-                    }}>
-                      Toggle header column
-                    </button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().toggleHeaderRow().run();
-                      setTable(false);
-                    }}>
-                      Toggle header row
-                    </button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().toggleHeaderCell().run();
-                      setTable(false);
-                    }}>
-                      Toggle header cell
-                    </button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().mergeOrSplit().run();
-                      setTable(false);
-                    }}>Merge or split</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().setCellAttribute('colspan', 2).run();
-                      setTable(false);
-                    }}>
-                      Set cell attribute
-                    </button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().fixTables().run();
-                      setTable(false);
-                    }}>Fix tables</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().goToNextCell().run();
-                      setTable(false);
-                    }}>Go to next cell</button></li>
-                    <li className="leading-8"><button onClick={() => {
-                      editor.chain().focus().goToPreviousCell().run();
-                      setTable(false);
-                    }}>
-                      Go to previous cell
-                    </button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(); setTable(false); }}>Insert table</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().addColumnBefore().run(); setTable(false); }}>Add column before</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().addColumnAfter().run(); setTable(false); }}>Add column after</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().deleteColumn().run(); setTable(false); }}>Delete column</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().addRowBefore().run(); setTable(false); }}>Add row before</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().addRowAfter().run(); setTable(false); }}>Add row after</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().deleteRow().run(); setTable(false); }}>Delete row</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().deleteTable().run(); setTable(false); }}>Delete table</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().mergeCells().run(); setTable(false); }}>Merge cells</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().splitCell().run(); setTable(false); }}>Split cell</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().toggleHeaderColumn().run(); setTable(false); }}>Toggle header column</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().toggleHeaderRow().run(); setTable(false); }}>Toggle header row</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().toggleHeaderCell().run(); setTable(false); }}>Toggle header cell</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().mergeOrSplit().run(); setTable(false); }}>Merge or split</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().setCellAttribute('colspan', 2).run(); setTable(false); }}>Set cell attribute</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().fixTables().run(); setTable(false); }}>Fix tables</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().goToNextCell().run(); setTable(false); }}>Go to next cell</button></li>
+                    <li className="leading-8"><button onClick={() => { editor.chain().focus().goToPreviousCell().run(); setTable(false); }}>Go to previous cell</button></li>
                   </ul>
                 </div>
               ) : (null)}
@@ -438,26 +425,26 @@ const MenuBar = () => {
                 <div className="w-[200px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999] h-[250px] overflow-scroll">
                   <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
                   <ul className="button-group divide-y-2">
-                  {fonts.map((font, index) => (
-                    <li key={index} className="leading-8">
-                    <button
-                      onClick={() => {
-                        editor.chain().focus().setFontFamily(font).run();
-                        setFamily(false); 
-                      }}
-                      className={`w-full ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
-                      data-test-id="inter"
-                    >
-                      {font}
-                    </button>
-                  </li>
-                  ))}
+                    {fonts.map((font, index) => (
+                      <li key={index} className="leading-8">
+                        <button
+                          onClick={() => {
+                            editor.chain().focus().setFontFamily(font).run();
+                            setFamily(false);
+                          }}
+                          className={`w-full ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
+                          data-test-id="inter"
+                        >
+                          {font}
+                        </button>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               ) : (null)}
             </div>
           </div>
-          
+
           <Tooltip text='BulletList (Ctrl+Shift+8)'>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -543,21 +530,21 @@ const MenuBar = () => {
               </button></Tooltip>
             )}
             <div className='relative' ref={colorDropdownRef}>
-            {colorDropdownOpen && (
-              <div className="tabs w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
-                <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
-                <div className='flex items-center flex-wrap gap-3'>
-                {colors.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setColor(color)}
-                    style={{ backgroundColor: color }}
-                    className={`w-[20px] h-[20px] ${editor.isActive('textStyle', { color }) ? 'active' : ''}`}
-                  />
-                ))}
+              {colorDropdownOpen && (
+                <div className="tabs w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
+                  <div className='flex items-center flex-wrap gap-3'>
+                    {colors.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => setColor(color)}
+                        style={{ backgroundColor: color }}
+                        className={`w-[20px] h-[20px] ${editor.isActive('textStyle', { color }) ? 'active' : ''}`}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </div>
           </div>
           <Tooltip text='Remove Color'>
@@ -580,21 +567,21 @@ const MenuBar = () => {
               </button></Tooltip>
             )}
             <div className='relative' ref={highlightDropdownRef}>
-            {highlightDropdownOpen && (
-              <div className="tabs w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
-                <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
-                <div className='flex items-center flex-wrap gap-3'>
-                {colors.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => toggleHighlight(color)}
-                    style={{ backgroundColor: color }}
-                    className={`w-[20px] h-[20px] bg-[${color}] ${editor.isActive('highlight', { color }) ? 'active' : ''}`}
-                  />
-                ))}
+              {highlightDropdownOpen && (
+                <div className="tabs w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
+                  <div className='flex items-center flex-wrap gap-3'>
+                    {colors.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => toggleHighlight(color)}
+                        style={{ backgroundColor: color }}
+                        className={`w-[20px] h-[20px] bg-[${color}] ${editor.isActive('highlight', { color }) ? 'active' : ''}`}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </div>
           </div>
           <Tooltip text='Remove Highlight'>
@@ -710,20 +697,44 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="redo" />
             </button>
           </Tooltip>
+          <Tooltip text='Save'><button onClick={handleSave}><SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="save" /></button></Tooltip>
         </div>, element) : null}
     </>
   )
 }
 
-const limit = 800
+let headingIdCounter = 0;
 
+const CustomHeading = Heading.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      id: {
+        default: null,
+        parseHTML: element => element.getAttribute('id'),
+        renderHTML: attributes => {
+          if (!attributes.id) {
+            return {};
+          }
+          return { id: attributes.id };
+        },
+      },
+    };
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    if (!HTMLAttributes.id) {
+      HTMLAttributes.id = `heading-${headingIdCounter++}`;
+    }
+    return ['h' + node.attrs.level, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
+  },
+});
 
 const extensions = [
   StarterKit.configure({
 
     heading: {
       HTMLAttributes: {
-        class: (level: any) => `heading-${level}`,
+        levels: [1, 2, 3, 4, 5, 6],
       },
     },
     bulletList: {
@@ -766,6 +777,11 @@ const extensions = [
   Placeholder.configure({
     placeholder: 'Write something …',
   }),
+  CustomHeading.configure({
+    HTMLAttributes: {
+      levels: [1, 2, 3, 4, 5, 6],
+    },
+  }),
   TableRow,
   TableHeader,
   TableCell,
@@ -775,12 +791,17 @@ const extensions = [
   FontFamily,
   Image,
   Underline,
+
 ]
 
+
+
+
 export const Tiptap = () => {
+
   return (
     <div className='my-5 placeholderdesign'>
       <EditorProvider slotBefore={<MenuBar />} extensions={extensions}></EditorProvider>
     </div>
-  )
-}
+  );
+};
