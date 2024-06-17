@@ -31,7 +31,6 @@ import Heading from '@tiptap/extension-heading';
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
-  // const [currentHeading, setCurrentHeading] = useState('Fonts');
   const [activeTab, setActiveTab] = useState(0);
   const [colorDropdownOpen, setColorDropdownOpen] = useState(false);
   const [highlightDropdownOpen, setHighlightDropdownOpen] = useState(false);
@@ -168,10 +167,6 @@ const MenuBar = () => {
     const json = editor.getJSON();
     const jsons = JSON.stringify(json, null, 2)
 
-    if (!json || Object.keys(json).length === 0) {
-      console.log("JSON data is empty. Aborting save.");
-      return; // Exit the function if data is empty
-    } 
     // const url = "https://skilline-educations.netlify.app/api/save-data"
     const url = "http://localhost:3000/api/save-data";
     const response = await fetch(url, {
@@ -216,7 +211,6 @@ const MenuBar = () => {
 
   const handleHeadingChange = (level: any) => {
     editor.chain().focus().toggleHeading({ level }).run();
-    // setCurrentHeading(editor.isActive('heading', { level }) ? `h${level}` : 'Normal');
     setDropdownOpen(false);
   };
 
@@ -351,16 +345,15 @@ const MenuBar = () => {
             </div>
             <div className='relative' ref={dropdownRef}>
               {dropdownOpen && (
-                <div className="w-[120px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[14px] text-center left-1/2 transform -translate-x-1/2 z-[999]">
-                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
+                <div className="w-[200px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[13px] transform z-[999]">
                   <div className='divide-y-2'>
                     {[1, 2, 3, 4, 5, 6].map(level => (
                       <p
                         key={level}
                         onClick={() => handleHeadingChange(level)}
-                        className={`cursor-pointer px-2 py-1 relative z-[999] ${editor.isActive('heading', { level }) ? 'bg-gray-200' : ''}`}
+                        className={`cursor-pointer px-2 py-2.5 relative z-[999] ${editor.isActive('heading', { level }) ? 'bg-gray-200' : ''}`}
                       >
-                        Heading {level}
+                        Heading {level} (Ctrl+Alt+{level})
                       </p>
                     ))}
                   </div>
@@ -382,8 +375,7 @@ const MenuBar = () => {
             )}
             <div className='relative' ref={tableRef}>
               {table ? (
-                <div className="w-[250px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999] h-[300px] overflow-scroll">
-                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
+                <div className="w-[220px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[13px]  transform  z-[999] h-[300px] overflow-scroll">
                   <ul className="button-group divide-y-2">
                     <li className="leading-8"><button onClick={() => { editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(); setTable(false); }}>Insert table</button></li>
                     <li className="leading-8"><button onClick={() => { editor.chain().focus().addColumnBefore().run(); setTable(false); }}>Add column before</button></li>
@@ -422,8 +414,7 @@ const MenuBar = () => {
             )}
             <div className='relative' ref={familyRef}>
               {family ? (
-                <div className="w-[200px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999] h-[250px] overflow-scroll">
-                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4" />
+                <div className="w-[200px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[13px] transform z-[999] h-[250px] overflow-scroll">
                   <ul className="button-group divide-y-2">
                     {fonts.map((font, index) => (
                       <li key={index} className="leading-8">
@@ -432,7 +423,7 @@ const MenuBar = () => {
                             editor.chain().focus().setFontFamily(font).run();
                             setFamily(false);
                           }}
-                          className={`w-full ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
+                          className={` ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
                           data-test-id="inter"
                         >
                           {font}
