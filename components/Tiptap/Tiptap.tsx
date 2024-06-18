@@ -26,8 +26,10 @@ import FontFamily from '@tiptap/extension-font-family'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import { stringify } from 'flatted';
+import UniqueID from '@tiptap/extension-unique-id'
 import { mergeAttributes } from '@tiptap/core';
 import Heading from '@tiptap/extension-heading';
+import { v4 as uuidv4 } from 'uuid';
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -155,6 +157,7 @@ const MenuBar = () => {
       console.error('Error in onSubmit:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchSavedData();
@@ -163,11 +166,11 @@ const MenuBar = () => {
   if (!editor) {
     return null;
   }
+
+
   const handleSave = async () => {
     const json = editor.getJSON();
     const jsons = JSON.stringify(json, null, 2)
-
-    // const url = "https://skilline-educations.netlify.app/api/save-data"
     const url = "http://localhost:3000/api/save-data";
     const response = await fetch(url, {
       method: "POST",
@@ -183,6 +186,11 @@ const MenuBar = () => {
     } else {
       console.log("failed");
     }
+    // const json = editor.getJSON(); // Get the JSON data from the editor
+    // const jsonString = JSON.stringify(json, null, 2); // Convert the JSON data to a string with pretty printing
+
+    // setEditorJson(json); // Save the JSON data to the state variable
+    // console.log(jsonString); 
   };
 
   const fetchSavedData = async () => {
@@ -192,9 +200,8 @@ const MenuBar = () => {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        // Update editor with fetched data
         if (editor && data) {
-          editor.commands.setContent(data); // Assuming setContent or a similar method exists
+          editor.commands.setContent(data);
         }
       } else {
         console.error('Failed to fetch saved data');
@@ -202,12 +209,10 @@ const MenuBar = () => {
     } catch (error) {
       console.error('Error fetching saved data:', error);
     }
+    // if (editor && editorJson) {
+    //   editor.commands.setContent(editorJson); // Set the content of the editor with the JSON data from the state variable
+    // }
   };
-
-
-
-
-  
 
   const handleHeadingChange = (level: any) => {
     editor.chain().focus().toggleHeading({ level }).run();
@@ -290,11 +295,11 @@ const MenuBar = () => {
     "unsetFontFamily",
   ]
 
-
   const element = document?.getElementById("editor-toolbar");
   return (
     <>
       {element ? createPortal(
+        
         <div className='w-full px-[4%] md:px-[3%] lg:px-[3%] xl:px-[5%] flex bg-[#edf2fa] flex-wrap py-[8px] px-[10px] rounded-sm justify-between relative'>
           <Tooltip text='Bold (Ctrl+B)'>
             <button
@@ -423,7 +428,7 @@ const MenuBar = () => {
                             editor.chain().focus().setFontFamily(font).run();
                             setFamily(false);
                           }}
-                          className={` ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
+                          className={` w-full text-left px-2 ${editor.isActive('textStyle', { fontFamily: font }) ? 'bg-gray-200' : ''}`}
                           data-test-id="inter"
                         >
                           {font}
@@ -694,7 +699,6 @@ const MenuBar = () => {
   )
 }
 
-let headingIdCounter = 0;
 
 const CustomHeading = Heading.extend({
   addAttributes() {
@@ -702,32 +706,46 @@ const CustomHeading = Heading.extend({
       ...this.parent?.(),
       id: {
         default: null,
-        parseHTML: element => element.getAttribute('id'),
+        parseHTML: element => ({
+          id: element.getAttribute('id'),
+        }),
         renderHTML: attributes => {
           if (!attributes.id) {
             return {};
           }
-          return { id: attributes.id };
+          return {
+            id: attributes.id,
+          };
+        },
+      },
+      dataId: {
+        default: null,
+        parseHTML: element => ({
+          dataId: element.getAttribute('data-id'),
+        }),
+        renderHTML: attributes => {
+          if (!attributes.dataId) {
+            return {};
+          }
+          return {
+            'data-id': attributes.dataId,
+          };
         },
       },
     };
   },
   renderHTML({ node, HTMLAttributes }) {
     if (!HTMLAttributes.id) {
-      HTMLAttributes.id = `heading-${headingIdCounter++}`;
+      HTMLAttributes.id = uuidv4(); // Generate UUID if id is not set
     }
     return ['h' + node.attrs.level, mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0];
   },
 });
 
+
+
 const extensions = [
   StarterKit.configure({
-
-    heading: {
-      HTMLAttributes: {
-        levels: [1, 2, 3, 4, 5, 6],
-      },
-    },
     bulletList: {
       HTMLAttributes: {
         class: 'custom-ul',
@@ -767,6 +785,10 @@ const extensions = [
   }),
   Placeholder.configure({
     placeholder: 'Write something …',
+  }),
+  UniqueID.configure({
+    types: ['heading'],
+    attributeName: 'id', // Specify the attribute name you want to use
   }),
   CustomHeading.configure({
     HTMLAttributes: {

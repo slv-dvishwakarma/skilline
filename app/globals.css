@@ -15,7 +15,7 @@ body {
 }
 
 .sidebar * {
-  font-family: var(--font-roboto);
+  font-family: 'Google-Sans';
 }
 :root {
     --primary-color: #FFF2E1; 
@@ -316,4 +316,46 @@ p.is-editor-empty:first-child::before {
   float: left;
   height: 0;
   pointer-events: none;
+}
+
+@font-face {
+  font-family: 'Google-Sans';
+  src: url('/fonts/Google-Sans/GoogleSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google-Sans';
+  src: url('/fonts/Google-Sans/GoogleSans-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google-Sans';
+  src: url('/fonts/Google-Sans/GoogleSans-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google-Sans';
+  src: url('/fonts/Google-Sans/GoogleSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Google-Sans';
+  src: url('/fonts/Google-Sans/GoogleSans-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Google-Sans';
+  src: url('/fonts/Google-Sans/GoogleSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
