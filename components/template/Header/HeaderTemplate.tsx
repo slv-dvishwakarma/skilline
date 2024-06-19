@@ -79,6 +79,11 @@ interface HeaderProps {
 export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login_form, signup_form }) => {
     const pathName = usePathname();
 
+
+    const [hideHeaderPages, setHideHeaderPages] = useState(['/editor']); 
+
+    const shouldHideHeader = hideHeaderPages.includes(pathName);
+
     const [login, setLogin] = useState(false);
     const [signup, setSignup] = useState(false);
     // const [isSticky, setIsSticky] = useState(false);
@@ -178,7 +183,10 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login
     // }, [open]);
 
     return (
-        <>
+        <div>
+        {!shouldHideHeader ? (
+        <div>
+        
             <nav className="dark:border-gray-700 font-poppins">
                 <div className="flex items-center justify-between mx-auto xl:p-2 lg:p-3 md:p-4 p-4">
                     <Link href="/"><Image src="/skilline-logo.png" alt='Skilline' width={657} height={280} className='w-[150px]'/></Link>
@@ -380,6 +388,9 @@ export const HeaderTemplate: React.FC<HeaderProps> = ({ mainmenu, content, login
                     </div>
                 </div>
             )}
-        </>
+        
+        </div>
+        ) : ( null )}
+        </div>
     );
 };

@@ -87,12 +87,12 @@ const Page: React.FC = () => {
 
     return (
         <>
-            <div className='' id='editor-toolbar'>  </div>
-            <ParentContainer className='bg-[#F9FBFD]'>
+            <div className='fixed w-full z-[1] top-0' id='editor-toolbar'>  </div>
+            <ParentContainer className='bg-[#F9FBFD] mt-[43px]'>
                 <div className='xl:flex lg:flex md:flex block gap-[25px] sidebar'>
                     <div className='xl:w-[22%] lg:w-[22%] md:w-[22%] w-full text-[#444746] font-roboto xl:sticky lg:sticky md:sticky h-fit p-2.5 top-0 my-[10px]'>
                         <div onClick={handleSidebar}>
-                            <SVGIcon className='h-12 w-[48px] -ml-3.5 flex items-center justify-center  text-xl bg-transparent w-[35px] hover:bg-[#E9ECEF] h-[35px] rounded-[50%]' name={show ? "arrowleft" : "burgerMenu"} />
+                            <SVGIcon className='h-[40px] w-[40px] -ml-3.5 flex items-center justify-center  text-xl bg-transparent w-[35px] hover:bg-[#E9ECEF] h-[35px] rounded-[50%]' name={show ? "arrowleft" : "burgerMenu"} />
                         </div>
                         {show ? (
                         <div className='h-[530px] overflow-y-auto'>

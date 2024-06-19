@@ -41,7 +41,7 @@ const MenuBar = () => {
   const [table, setTable] = useState(false);
   const [video, setVideo] = useState(false);
   const [family, setFamily] = useState(false);
-  const [showHTML, setShowHTML] = useState(false);
+  const [alignment, setAlignment] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const colorDropdownRef = useRef<HTMLDivElement>(null);
@@ -50,6 +50,7 @@ const MenuBar = () => {
   const tableRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
   const familyRef = useRef<HTMLDivElement>(null);
+  const alignRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -73,6 +74,9 @@ const MenuBar = () => {
       }
       if (familyRef.current && !familyRef.current.contains(event.target as Node)) {
         setFamily(false);
+      }
+      if (alignRef.current && !alignRef.current.contains(event.target as Node)) {
+        setAlignment(false);
       }
     };
 
@@ -158,7 +162,7 @@ const MenuBar = () => {
       console.error('Error in onSubmit:', error);
     }
   };
-  
+
 
   useEffect(() => {
     fetchSavedData();
@@ -167,6 +171,34 @@ const MenuBar = () => {
   if (!editor) {
     return null;
   }
+
+  const handlePrint = () => {
+    if (editor) {
+      const printContent = editor.getHTML();
+
+      // Create a new window with the editor's content
+      const printWindow = window.open('', '', 'width=800,height=600');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Print</title>
+            </head>
+            <body>
+              ${printContent}
+              <script>
+                window.onload = function() {
+                  window.print();
+                  window.close();
+                };
+              </script>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+      }
+    }
+  };
 
 
   const handleSave = async () => {
@@ -196,7 +228,7 @@ const MenuBar = () => {
 
   const fetchSavedData = async () => {
     try {
-       const url = "http://localhost:3000/api/save-data";
+      const url = "http://localhost:3000/api/save-data";
       //  const url = "https://skilline-educations.netlify.app/api/save-data"
       const response = await fetch(url);
       if (response.ok) {
@@ -255,11 +287,6 @@ const MenuBar = () => {
     }
   };
 
-  const handleInsertHtmlCode = () => {
-    // Insert HTML code into the editor
-    const htmlCode = '<div class="html-code-block">Your HTML code here</div>';
-    editor?.chain().focus().insertContent(htmlCode).run();
-  };
 
   const addYouTube = () => {
     setVideo(true);
@@ -292,8 +319,8 @@ const MenuBar = () => {
     setFamily(true)
   }
 
-  const toggleHTMLView = () => {
-    setShowHTML(prevState => !prevState);
+  const handleAlignment = () => {
+    setAlignment(!alignment);
   };
 
   const fonts = [
@@ -310,7 +337,7 @@ const MenuBar = () => {
   return (
     <>
       {element ? createPortal(
-        
+
         <div className='w-full px-[4%] md:px-[3%] lg:px-[3%] xl:px-[5%] flex bg-[#edf2fa] flex-wrap py-[8px] px-[10px] rounded-sm justify-between relative'>
           <Tooltip text='Bold (Ctrl+B)'>
             <button
@@ -468,38 +495,63 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Ordered" />
             </button>
           </Tooltip>
-          <Tooltip text='Left Align (Ctrl+Shift+L)'>
-            <button
-              onClick={() => setTextAlign('left')}
-              className={editor.isActive({ textAlign: 'left' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
-            >
-              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="left" />
-            </button>
-          </Tooltip>
-          <Tooltip text='Center Align (Ctrl+Shift+E)'>
-            <button
-              onClick={() => setTextAlign('center')}
-              className={editor.isActive({ textAlign: 'center' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
-            >
-              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Center" />
-            </button>
-          </Tooltip>
-          <Tooltip text='Right Align (Ctrl+Shift+R)'>
-            <button
-              onClick={() => setTextAlign('right')}
-              className={editor.isActive({ textAlign: 'right' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
-            >
-              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Right" />
-            </button>
-          </Tooltip>
-          <Tooltip text='Justify (Ctrl+Shift+J)'>
-            <button
-              onClick={() => setTextAlign('justify')}
-              className={editor.isActive({ textAlign: 'justify' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
-            >
-              <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Justify" />
-            </button>
-          </Tooltip>
+          <div className='alignment dropdown'>
+            {!alignment ? (
+              <Tooltip text='Align Item'>
+                <button onClick={handleAlignment} className='flex items-center'>
+                  <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="align" />
+                  <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="ArrowDown" />
+                </button>
+              </Tooltip>
+            ) : (
+              <button onClick={handleAlignment} className='flex items-center'>
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="align" />
+                <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="ArrowDown" />
+              </button>
+            )}
+            <div className='relative' ref={alignRef}>
+              {alignment ? (
+                <div className='tabs w-[150px] p-2.5 top-[5px] absolute bg-white rounded-md border bg-popover text-[12px] text-center left-1/2 transform -translate-x-1/2 z-[999]'>
+                  <div className="absolute w-0 h-0 top-[-5px] -translate-x-2/4 border-b-[5px] border-b-white border-x-[5px] border-x-transparent border-solid left-2/4"></div>
+                  <div className='flex justify-between'>
+                    <Tooltip text='Left Align (Ctrl+Shift+L)'>
+                      <button
+                        onClick={() => {setTextAlign('left'); setAlignment(false);}}
+                        className={editor.isActive({ textAlign: 'left' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
+
+                      >
+                        <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="left" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip text='Center Align (Ctrl+Shift+E)'>
+                      <button
+                        onClick={() => {setTextAlign('center'); setAlignment(false);}}
+                        className={editor.isActive({ textAlign: 'center' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
+                      >
+                        <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Center" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip text='Right Align (Ctrl+Shift+R)'>
+                      <button
+                        onClick={() => {setTextAlign('right'); setAlignment(false);}}
+                        className={editor.isActive({ textAlign: 'right' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
+                      >
+                        <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Right" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip text='Justify (Ctrl+Shift+J)'>
+                      <button
+                        onClick={() => {setTextAlign('justify'); setAlignment(false);}}
+                        className={editor.isActive({ textAlign: 'justify' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
+                      >
+                        <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Justify" />
+                      </button>
+                    </Tooltip>
+                  </div>
+                </div>
+              ) : (null)}
+            </div>
+          </div>
           <Tooltip text='Code'>
             <button
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
@@ -705,9 +757,9 @@ const MenuBar = () => {
             </button>
           </Tooltip>
           <Tooltip text='Save'><button onClick={handleSave}><SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="save" /></button></Tooltip>
-          <button onClick={handleInsertHtmlCode}>Insert HTML Code</button>
-      {/* Add other buttons as needed */}
-    
+          <Tooltip text='Print'>
+            <button onClick={handlePrint}><SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="print" /></button>
+          </Tooltip>
         </div>, element) : null}
     </>
   )
@@ -760,7 +812,7 @@ const CustomHeading = Heading.extend({
 
 const extensions = [
   StarterKit.configure({
-    
+
     bulletList: {
       HTMLAttributes: {
         class: 'custom-ul',
@@ -803,14 +855,14 @@ const extensions = [
   }),
   UniqueID.configure({
     types: ['heading'],
-    attributeName: 'id', 
+    attributeName: 'id',
   }),
   CustomHeading.configure({
     HTMLAttributes: {
       levels: [1, 2, 3, 4, 5, 6],
     },
   }),
-  
+
   TableRow,
   TableHeader,
   TableCell,
