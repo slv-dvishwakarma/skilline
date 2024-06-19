@@ -30,6 +30,8 @@ import UniqueID from '@tiptap/extension-unique-id'
 import { mergeAttributes } from '@tiptap/core';
 import Heading from '@tiptap/extension-heading';
 import { v4 as uuidv4 } from 'uuid';
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -176,16 +178,35 @@ const MenuBar = () => {
     if (editor) {
       const printContent = editor.getHTML();
 
-      // Create a new window with the editor's content
+      // Watermark HTML to be inserted
+      const watermarkHTML = `
+        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.2; z-index: 9999;">
+          <p style="font-size: 48px; font-weight: bold;"><img src="/skilline-logo.png" /></p>
+        </div>
+      `;
+
       const printWindow = window.open('', '', 'width=800,height=600');
       if (printWindow) {
         printWindow.document.write(`
           <html>
             <head>
-              <title>Print</title>
+              <title>Skilline-Education</title>
+              <style>
+                @media print {
+                  body {
+                    visibility: hidden;
+                  }
+                  .print-content, .print-content * {
+                    visibility: visible;
+                  }
+                }
+              </style>
             </head>
             <body>
-              ${printContent}
+              <div class="print-content">
+                ${printContent}
+                ${watermarkHTML}
+              </div>
               <script>
                 window.onload = function() {
                   window.print();
@@ -366,6 +387,7 @@ const MenuBar = () => {
               <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Strikethrough" />
             </button>
           </Tooltip>
+          
           <Tooltip text='Paragraph (Ctrl+Alt+0)'>
             <button
               onClick={() => editor.chain().focus().setParagraph().run()}
@@ -478,7 +500,30 @@ const MenuBar = () => {
               ) : (null)}
             </div>
           </div>
-
+          <Tooltip text='Subscript (Ctrl+ ,)'><button
+            onClick={() => {
+              if (editor.isActive('subscript')) {
+                editor.chain().focus().unsetSubscript().run();
+              } else {
+                editor.chain().focus().setSubscript().run();
+              }
+            }}
+          >
+            <SVGIcon className="text-[22px] flex justify-center items-center w-6 h-6" name="Subscript" />
+          </button>
+          </Tooltip>
+          <Tooltip text='Superscript (Ctrl+ .)'><button
+            onClick={() => {
+              if (editor.isActive('superscript')) {
+                editor.chain().focus().unsetSuperscript().run();
+              } else {
+                editor.chain().focus().setSuperscript().run();
+              }
+            }}
+          >
+            <SVGIcon className="text-[22px] flex justify-center items-center w-6 h-6" name="Superscript" />
+          </button>
+          </Tooltip>
           <Tooltip text='BulletList (Ctrl+Shift+8)'>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -516,7 +561,7 @@ const MenuBar = () => {
                   <div className='flex justify-between'>
                     <Tooltip text='Left Align (Ctrl+Shift+L)'>
                       <button
-                        onClick={() => {setTextAlign('left'); setAlignment(false);}}
+                        onClick={() => { setTextAlign('left'); setAlignment(false); }}
                         className={editor.isActive({ textAlign: 'left' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
 
                       >
@@ -525,7 +570,7 @@ const MenuBar = () => {
                     </Tooltip>
                     <Tooltip text='Center Align (Ctrl+Shift+E)'>
                       <button
-                        onClick={() => {setTextAlign('center'); setAlignment(false);}}
+                        onClick={() => { setTextAlign('center'); setAlignment(false); }}
                         className={editor.isActive({ textAlign: 'center' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
                       >
                         <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Center" />
@@ -533,7 +578,7 @@ const MenuBar = () => {
                     </Tooltip>
                     <Tooltip text='Right Align (Ctrl+Shift+R)'>
                       <button
-                        onClick={() => {setTextAlign('right'); setAlignment(false);}}
+                        onClick={() => { setTextAlign('right'); setAlignment(false); }}
                         className={editor.isActive({ textAlign: 'right' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
                       >
                         <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Right" />
@@ -541,7 +586,7 @@ const MenuBar = () => {
                     </Tooltip>
                     <Tooltip text='Justify (Ctrl+Shift+J)'>
                       <button
-                        onClick={() => {setTextAlign('justify'); setAlignment(false);}}
+                        onClick={() => { setTextAlign('justify'); setAlignment(false); }}
                         className={editor.isActive({ textAlign: 'justify' }) ? 'is-active bg-[#D3E3FD] w-6 h-6 flex items-center justify-center rounded' : 'bg-[transparant] w-6 h-6 flex items-center justify-center rounded'}
                       >
                         <SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="Justify" />
@@ -862,7 +907,7 @@ const extensions = [
       levels: [1, 2, 3, 4, 5, 6],
     },
   }),
-
+  Subscript,
   TableRow,
   TableHeader,
   TableCell,
@@ -872,6 +917,7 @@ const extensions = [
   FontFamily,
   Image,
   Underline,
+  Superscript,
 ]
 
 
