@@ -41,6 +41,7 @@ const MenuBar = () => {
   const [table, setTable] = useState(false);
   const [video, setVideo] = useState(false);
   const [family, setFamily] = useState(false);
+  const [showHTML, setShowHTML] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const colorDropdownRef = useRef<HTMLDivElement>(null);
@@ -254,6 +255,12 @@ const MenuBar = () => {
     }
   };
 
+  const handleInsertHtmlCode = () => {
+    // Insert HTML code into the editor
+    const htmlCode = '<div class="html-code-block">Your HTML code here</div>';
+    editor?.chain().focus().insertContent(htmlCode).run();
+  };
+
   const addYouTube = () => {
     setVideo(true);
   };
@@ -284,6 +291,10 @@ const MenuBar = () => {
   const insertsFonts = () => {
     setFamily(true)
   }
+
+  const toggleHTMLView = () => {
+    setShowHTML(prevState => !prevState);
+  };
 
   const fonts = [
     "inter",
@@ -694,6 +705,9 @@ const MenuBar = () => {
             </button>
           </Tooltip>
           <Tooltip text='Save'><button onClick={handleSave}><SVGIcon className="text-[16px] flex justify-center items-center w-6 h-6" name="save" /></button></Tooltip>
+          <button onClick={handleInsertHtmlCode}>Insert HTML Code</button>
+      {/* Add other buttons as needed */}
+    
         </div>, element) : null}
     </>
   )
@@ -746,6 +760,7 @@ const CustomHeading = Heading.extend({
 
 const extensions = [
   StarterKit.configure({
+    
     bulletList: {
       HTMLAttributes: {
         class: 'custom-ul',
@@ -788,13 +803,14 @@ const extensions = [
   }),
   UniqueID.configure({
     types: ['heading'],
-    attributeName: 'id', // Specify the attribute name you want to use
+    attributeName: 'id', 
   }),
   CustomHeading.configure({
     HTMLAttributes: {
       levels: [1, 2, 3, 4, 5, 6],
     },
   }),
+  
   TableRow,
   TableHeader,
   TableCell,
@@ -804,7 +820,6 @@ const extensions = [
   FontFamily,
   Image,
   Underline,
-
 ]
 
 
@@ -812,9 +827,11 @@ const extensions = [
 
 export const Tiptap = () => {
 
+
   return (
-    <div className='my-5 placeholderdesign'>
-      <EditorProvider slotBefore={<MenuBar />} extensions={extensions}></EditorProvider>
+    <div className='my-5 placeholderdesign' id="shohtml">
+      <EditorProvider slotBefore={<MenuBar />} extensions={extensions}>
+      </EditorProvider>
     </div>
   );
 };

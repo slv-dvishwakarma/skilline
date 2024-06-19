@@ -76,8 +76,8 @@ const Page: React.FC = () => {
         return headings.map((heading, index) => {
             const marginLeft = (heading.level - 1) * 20;
             return (
-                <div key={index} style={{ marginLeft: `${marginLeft}px` }} className="py-1">
-                    <a href={`#${heading.id}`} className="text-blue-500 hover:underline">
+                <div key={index} style={{ marginLeft: `${marginLeft}px` }} className="py-1 tracking-[0.25px] text-sm text-[#5f6368] font-medium">
+                    <a href={`#${heading.id}`} className="hover:underline">
                         {heading.text}
                     </a>
                 </div>
@@ -92,14 +92,16 @@ const Page: React.FC = () => {
                 <div className='xl:flex lg:flex md:flex block gap-[25px] sidebar'>
                     <div className='xl:w-[22%] lg:w-[22%] md:w-[22%] w-full text-[#444746] font-roboto xl:sticky lg:sticky md:sticky h-fit p-2.5 top-0 my-[10px]'>
                         <div onClick={handleSidebar}>
-                            <SVGIcon className='flex items-center justify-center  text-xl bg-transparent w-[35px] hover:bg-[#E9ECEF] h-[35px] rounded-[50%]' name={show ? "arrowleft" : "burgerMenu"} />
+                            <SVGIcon className='h-12 w-[48px] -ml-3.5 flex items-center justify-center  text-xl bg-transparent w-[35px] hover:bg-[#E9ECEF] h-[35px] rounded-[50%]' name={show ? "arrowleft" : "burgerMenu"} />
                         </div>
-                        <div className="mt-4">
-                            <h2 className="text-lg font-bold">Table of Contents</h2>
+                        {show ? (
+                        <div className='h-[530px] overflow-y-auto'>
+                            <h2 className="text-[#5f6368] text-[11px] font-medium tracking-[0.1px] leading-4 normal-case pb-3">Outline</h2>
                             {renderTOC(headings)}
                         </div>
+                        ) : null}
                     </div>
-                    <div className='xl:w-[78%] lg:w-[78%] md:w-[78%] w-full border border-solid border-[#c7c7c7] p-5 bg-white my-[15px] ul-li'>
+                    <div className='xl:w-[78%] lg:w-[78%] md:w-[78%] w-full p-5 bg-white my-[15px] ul-li' style={{outline: "1px solid #c7c7c7"}}>
                         <Tiptap />
                     </div>
                 </div>
